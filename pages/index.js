@@ -1,5 +1,12 @@
+import XpathInspector from '@/components/XpathInspector';
+
 const HomePage = () => {
-    return <>Home Page</>
-}
+    return (
+        <>
+            <XpathInspector />
+            Home Page
+        </>
+    );
+};
 
 export default HomePage;

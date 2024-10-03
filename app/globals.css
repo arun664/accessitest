@@ -25,3 +25,29 @@ body {
     text-wrap: balance;
   }
 }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  padding: 10px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+div {
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+}
