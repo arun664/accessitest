@@ -92,36 +92,36 @@ export default function XpathInspector() {
   };
 
   return (
-    <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: '1000', padding: '10px' }}>
-      <button className="inspect-button" onClick={toggleInspection}>
+    <div className="relative p-4 bg-white border rounded shadow-lg">
+      <button className="inspect-button px-4 py-2 mb-2 text-white bg-blue-500 hover:bg-blue-700 rounded" onClick={toggleInspection}>
         {isInspecting ? 'Stop Inspecting' : 'Start Inspecting'}
       </button>
       
       {xpath && (
-        <div>
-          <p>XPath: {xpath}</p>
-          <button className="inspect-button" onClick={addXpathToTable}>Add to Table</button>
+        <div className="mb-4">
+          <p className="font-medium">XPath: <span className="font-normal">{xpath}</span></p>
+          <button className="inspect-button px-4 py-2 mt-2 text-white bg-green-500 hover:bg-green-700 rounded" onClick={addXpathToTable}>Add to Table</button>
         </div>
       )}
 
       {xpathList.length > 0 && (
         <div>
-          <h3>Inspected XPaths</h3>
-          <table style={{ border: '1px solid black', width: '100%' }}>
+          <h3 className="mb-2 text-lg font-semibold">Inspected XPaths</h3>
+          <table className="min-w-full border-collapse border border-gray-200">
             <thead>
               <tr>
-                <th>#</th>
-                <th>XPath</th>
-                <th>Actions</th>
+                <th className="border border-gray-300 p-2">#</th>
+                <th className="border border-gray-300 p-2">XPath</th>
+                <th className="border border-gray-300 p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
               {xpathList.map((xpath, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{xpath}</td>
-                  <td>
-                    <button onClick={() => removeXpathFromTable(index)}>Remove</button>
+                  <td className="border border-gray-300 p-2">{index + 1}</td>
+                  <td className="border border-gray-300 p-2">{xpath}</td>
+                  <td className="border border-gray-300 p-2">
+                    <button className="text-red-500 hover:text-red-700" onClick={() => removeXpathFromTable(index)}>Remove</button>
                   </td>
                 </tr>
               ))}
