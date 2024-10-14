@@ -1,193 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import { useRef } from 'react';
 
-export default function XpathInspector() {
-  const [isInspecting, setIsInspecting] = useState(false);
-  const [xpath, setXpath] = useState('');
-  const [label, setLabel] = useState('');
-  const [xpathList, setXpathList] = useState([]);
+const XPathInspector = ({ url }) => {
+  const iframeRef = useRef(null);
 
-  // Toggle the inspection mode
-  const toggleInspection = () => {
-    setIsInspecting((prev) => {
-      if (prev) {
-        removeHighlightFromAll();
-      }
-      return !prev;
-    });
-  };
+  const getRelativeXPath = (element) => {
+    if (!(element instanceof Element)) return;
 
-  useEffect(() => {
-    if (isInspecting) {
-      document.body.addEventListener('click', handleElementClick, true);
-      document.body.addEventListener('mouseover', handleMouseOver);
-      document.body.addEventListener('mouseout', handleMouseOut);
-    } else {
-      document.body.removeEventListener('click', handleElementClick, true);
-      document.body.removeEventListener('mouseover', handleMouseOver);
-      document.body.removeEventListener('mouseout', handleMouseOut);
-    }
-
-    return () => {
-      document.body.removeEventListener('click', handleElementClick, true);
-      document.body.removeEventListener('mouseover', handleMouseOver);
-      document.body.removeEventListener('mouseout', handleMouseOut);
-    };
-  }, [isInspecting]);
-
-  // Highlight on inspecting element
-  const highlightElement = (element) => {
-    element.style.outline = '2px solid red';
-  };
-
-  const unHighlightElement = (element) => {
-    element.style.outline = '';
-  };
-
-  const handleMouseOver = (e) => {
-    highlightElement(e.target);
-  };
-
-  const handleMouseOut = (e) => {
-    unHighlightElement(e.target);
-  };
-
-  // Remove highlights from all elements when stopping inspection
-  const removeHighlightFromAll = () => {
-    document.querySelectorAll('*').forEach((el) => {
-      el.style.outline = '';
-    });
-  };
-
-  // Handle element click to get XPath
-  const handleElementClick = (e) => {
-    if (e.target.classList.contains('inspect-button')) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const path = getImprovedXPath(e.target);
-    if (isUniqueXPath(path)) {
-      setXpath(path);
-    } else {
-      console.log('Generated XPath is not unique. Refining...');
-    }
-  };
-
-  // Check if XPath is unique
-  const isUniqueXPath = (xpath) => {
-    const result = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    return result.snapshotLength === 1;
-  };
-
-  // Improved function to generate an accurate XPath
-  const getImprovedXPath = (element) => {
-    if (element.id) {
-      return `//*[@id="${element.id}"]`; // If the element has an ID, use it (unique)
-    }
-    if (element.name) {
-      return `//*[@name="${element.name}"]`; // If the element has a name attribute, use it
-    }
-
-    // Generate XPath by traversing from parent to child
-    const path = [];
+    let xpath = '';
     while (element && element.nodeType === Node.ELEMENT_NODE) {
-      const tagName = element.tagName.toLowerCase();
-      
-      // Check for unique class-based partial match
-      if (element.classList.length > 0) {
-        const partialClassName = element.classList[0]; // Consider only the first class as a partial match
-        const classBasedXPath = `${tagName}[contains(@class, "${partialClassName}")]`;
-
-        if (isUniqueXPath(classBasedXPath)) {
-          path.unshift(classBasedXPath);
-          break;
-        }
-      }
-
-      // Check if element has siblings of the same type
-      const siblings = Array.from(element.parentNode.children).filter(
-        (sibling) => sibling.tagName === element.tagName
-      );
-
-      if (siblings.length > 1) {
-        // Add index only if there are multiple siblings with the same tag name
-        const index = siblings.indexOf(element) + 1;
-        path.unshift(`${tagName}[${index}]`);
+      let selector = element.nodeName.toLowerCase();
+      if (element.id) {
+        selector += `[@id="${element.id}"]`;
       } else {
-        path.unshift(tagName); // No index needed if it’s unique among siblings
+        let sibling = element;
+        let index = 1;
+        while ((sibling = sibling.previousElementSibling)) {
+          if (sibling.nodeName.toLowerCase() === element.nodeName.toLowerCase()) {
+            index++;
+          }
+        }
+        selector += `[${index}]`;
       }
-
+      xpath = `${selector}${xpath ? '/' + xpath : ''}`;
       element = element.parentNode;
     }
-
-    return `/${path.join('/')}`;
+    return xpath;
   };
 
-  // Add the current XPath and label to the table
-  const addXpathToTable = () => {
-    if (xpath && !xpathList.some((item) => item.xpath === xpath)) {
-      setXpathList([...xpathList, { xpath, label }]);
-      setLabel('');  // Clear the label input after adding
-    }
-  };
+  const inspectIframe = () => {
+    const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+    const elements = iframeDocument.querySelectorAll('*');
 
-  // Remove an XPath from the table
-  const removeXpathFromTable = (index) => {
-    const updatedList = xpathList.filter((_, i) => i !== index);
-    setXpathList(updatedList);
+    elements.forEach((element) => {
+      console.log(getRelativeXPath(element));
+    });
   };
 
   return (
-    <div className="relative p-4 bg-white border rounded shadow-lg">
-      <button className="inspect-button px-4 py-2 mb-2 text-white bg-blue-500 hover:bg-blue-700 rounded" onClick={toggleInspection}>
-        {isInspecting ? 'Stop Inspecting' : 'Start Inspecting'}
+    <div className="flex flex-col items-center space-y-4 p-4">
+      <iframe
+        ref={iframeRef}
+        src={url}
+        className="w-full h-96 border border-gray-300 rounded"
+        title="XPath Inspector Iframe"
+      />
+      <button
+        onClick={inspectIframe}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-all"
+      >
+        Inspect Elements
       </button>
-      
-      {xpath && (
-        <div className="mb-4">
-          <p className="font-medium">XPath: <span className="font-normal">{xpath}</span></p>
-          <input
-            type="text"
-            className="px-2 py-1 border rounded mt-2"
-            placeholder="Add label"
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-          />
-          <button className="inspect-button px-4 py-2 mt-2 ml-2 text-white bg-green-500 hover:bg-green-700 rounded" onClick={addXpathToTable}>
-            Add to Table
-          </button>
-        </div>
-      )}
-
-      {xpathList.length > 0 && (
-        <div>
-          <h3 className="mb-2 text-lg font-semibold">Inspected XPaths</h3>
-          <table className="min-w-full border-collapse border border-gray-200">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 p-2">#</th>
-                <th className="border border-gray-300 p-2">XPath</th>
-                <th className="border border-gray-300 p-2">Label</th>
-                <th className="border border-gray-300 p-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {xpathList.map((item, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 p-2">{index + 1}</td>
-                  <td className="border border-gray-300 p-2">{item.xpath}</td>
-                  <td className="border border-gray-300 p-2">{item.label}</td>
-                  <td className="border border-gray-300 p-2">
-                    <button className="text-red-500 hover:text-red-700" onClick={() => removeXpathFromTable(index)}>Remove</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
-}
+};
+
+export default XPathInspector;
