@@ -1,4 +1,4 @@
-import { db } from '../../firebaseConfig'; // Firebase configuration
+import { db } from '@/config/firebaseConfig';
 import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore/lite'; // Firestore functions
 
 const registerUser = async ({ email, password, userName }) => {
