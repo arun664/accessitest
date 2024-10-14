@@ -22,6 +22,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+              <Link href="/registration" className="hover:underline">
+                Register
+              </Link>
+            </li>
+            <li>
               <Link href="/contact" className="hover:underline">
                 Contact
               </Link>
