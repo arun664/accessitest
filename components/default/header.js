@@ -7,7 +7,7 @@ const Header = () => {
     <header className="bg-blue-600 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-2xl font-bold">
-          <Link href="/">My Website</Link>
+          <Link href="/">AccessiTest</Link>
         </h1>
         <nav>
           <ul className="flex space-x-4">
