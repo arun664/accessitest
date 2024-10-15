@@ -2,11 +2,12 @@ import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { name, email, message } = req.body;
+    const { name, email, number, subject, text } = req.body;
 
     // Create a transporter using Nodemailer
     const transporter = nodemailer.createTransport({
-      service: 'Gmail', // Or another email service like Outlook, Yahoo, etc.
+      host: 'smtp.ethereal.email',
+      port: 587,
       auth: {
         user: process.env.EMAIL_USER, // Use your email address here (from env file)
         pass: process.env.EMAIL_PASS, // Use your email password here (from env file)
@@ -21,7 +22,9 @@ export default async function handler(req, res) {
       text: `You received a message from:
       Name: ${name}
       Email: ${email}
-      Message: ${message}`,
+      Phone: ${number}
+      Subject: ${subject}
+      Message: ${text}`,
     };
 
     try {

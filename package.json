@@ -12,6 +12,7 @@
     "axe-core": "^4.10.0",
     "firebase": "^10.14.1",
     "next": "14.2.14",
+    "nodemailer": "^6.9.15",
     "puppeteer": "^23.5.3",
     "react": "^18",
     "react-axe": "^3.5.4",
