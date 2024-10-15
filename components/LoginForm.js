@@ -2,48 +2,50 @@ import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
-const RegistrationForm = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState('');
 
-  const handleRegister = async () => {
+  const isValidEmail = (email) => {
+    // Regular expression for basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleLogin = async () => {
+    // Clear any previous error messages
     toast.dismiss(); // Dismiss any existing toasts
+
+    // Check if the email is valid
+    if (!isValidEmail(email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+
     try {
-      const response = await fetch('/api/user/register', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          userName,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(result.message); // Show success message
+        toast.success(`Welcome, ${result.userName}!`);
       } else {
-        toast.error(result.error); // Show error message
+        toast.error(result.error);
       }
     } catch (err) {
-      toast.error('There was an issue registering the user'); // Show general error
+      toast.error('There was an issue logging in. Please try again later.');
     }
   };
 
   return (
     <div>
       <ToastContainer /> {/* Include the ToastContainer to render the notifications */}
-      <input
-        type="text"
-        placeholder="Username"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
-        className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-      />
       <input
         type="email"
         placeholder="Email"
@@ -59,19 +61,13 @@ const RegistrationForm = () => {
         className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
       />
       <button
-        onClick={handleRegister}
+        onClick={handleLogin}
         className="bg-blue-600 text-white p-3 rounded w-full hover:bg-blue-700 transition duration-200"
       >
-        Register
+        Login
       </button>
-      <p className="text-center text-gray-500 mt-4">
-        Already have an account?{' '}
-        <a href="/login" className="text-blue-600 hover:underline">
-          Login here
-        </a>
-      </p>
     </div>
   );
 };
 
-export default RegistrationForm;
+export default LoginForm;

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -8,8 +10,6 @@ export default function ContactForm() {
     subject: '',
     text: '',
   });
-  const [message, setMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,8 +20,6 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
-    setShowToast(false);
 
     try {
       const response = await fetch('/api/send-email', {
@@ -33,8 +31,7 @@ export default function ContactForm() {
       });
 
       if (response.ok) {
-        setMessage('Your request is successful!');
-        setShowToast(true); // Show toast notification
+        toast.success('Your request is successful!'); // Show success toast
         setFormData({
           name: '',
           email: '',
@@ -43,28 +40,17 @@ export default function ContactForm() {
           text: '',
         });
       } else {
-        setMessage('Error! Unable to process your request.');
-        setShowToast(true);
+        toast.error('Error! Unable to process your request.'); // Show error toast
       }
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Error! Unable to process your request.');
-      setShowToast(true);
+      toast.error('Error! Unable to process your request.'); // Show general error toast
     }
   };
 
-  // Hide toast notification after 3 seconds
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <ToastContainer /> {/* Include the ToastContainer to render the notifications */}
       <h1 className="text-3xl font-semibold mb-6">Contact Us</h1>
       <form
         onSubmit={handleSubmit}
@@ -147,13 +133,6 @@ export default function ContactForm() {
           Submit
         </button>
       </form>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg animate-fade-in-out">
-          {message}
-        </div>
-      )}
     </div>
   );
 }
