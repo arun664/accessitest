@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 const tools = [
-  { value: 'axe-core', label: 'Axe-Core' },
+  { value: 'axe-core', label: 'Axe-Core' }, 
   // Add more tools here when needed
 ];
 
