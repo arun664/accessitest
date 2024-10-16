@@ -7,19 +7,22 @@ async function getBrowser() {
       (mod) => mod.default
     );
 
-    const puppeteerCore = await import("puppeteer-core").then(
+    const puppeteer = await import("puppeteer-core").then(
       (mod) => mod.default
     );
 
     chromium.setHeadlessMode = true;
     chromium.setGraphicsMode = false;
 
-    const browser = await puppeteerCore.launch({
+    const browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
       headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
+
+    console.log("Browser launched.");
 
     return browser;
   } else {
