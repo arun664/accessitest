@@ -1,13 +1,22 @@
-import { chromium } from "chrome-aws-lambda"; // Use chrome-aws-lambda for serverless environments
-import puppeteerCore from "puppeteer-core";
-import puppeteer from "puppeteer";
 import path from "path";
 import fs from "fs";
 
+const CHROMIUM_PATH =
+  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+
 async function getBrowser() {
-  if (process.env.CURRENT_BUILD === "production") {
-    const executablePath = await chromium.executablePath;
-    const browser = await chromium.puppeteer.launch({
+  if (process.env.VERCEL_ENV === "production") {
+    const chromium = await import("@sparticuz/chromium-min").then(
+      (mod) => mod.default
+    );
+
+    const puppeteerCore = await import("puppeteer-core").then(
+      (mod) => mod.default
+    );
+
+    const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+
+    const browser = await puppeteerCore.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath,
@@ -15,9 +24,9 @@ async function getBrowser() {
     });
     return browser;
   } else {
-    const browser = await puppeteer.launch({
-      headless: true,
-    });
+    const puppeteer = await import("puppeteer").then((mod) => mod.default);
+
+    const browser = await puppeteer.launch();
     return browser;
   }
 }
