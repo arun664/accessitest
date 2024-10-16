@@ -1,11 +1,7 @@
 {
-    "functions": {
-      "api/axeCore.js": {
-        "runtime": "nodejs20.x",
-        "environment": {
-          "HEADLESS": "1",
-          "CHROME_BINARY": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        }
-      }
+  "functions": {
+    "api/axeCore.js": {
+      "runtime": "nodejs20.17.0"
     }
   }
+}

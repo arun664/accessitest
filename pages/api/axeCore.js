@@ -5,7 +5,7 @@ import path from 'path';
 import fs from 'fs';
 
 async function getBrowser() {
-  if (process.env.VERCEL_ENV === "production") {
+  if (process.env.CURRENT_BUILD === "production") {
     const executablePath = await chromium.executablePath;
     const browser = await puppeteerCore.launch({
       args: chromium.args,
