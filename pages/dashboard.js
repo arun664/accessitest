@@ -1,24 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import AxeCoreResultTable from '@/components/AxeCoreResultTable'; // Adjust the import path based on your project structure
 import AuthContext from '@/context/AuthContext'; // Adjust the import path based on your project structure
+import { toast, ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   const router = useRouter();
   const { loggedIn } = useContext(AuthContext); // Get loggedIn state from AuthContext
-  useEffect(() => {
-    // Check if window is defined (indicating client-side rendering)
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('yourTokenKey');
-      setUserToken(token);
-    }
-  }, []);
-  
   const results = router.query.results ? JSON.parse(router.query.results) : null;
   const url = router.query.url; // Extract URL from query
+  toast.dismiss(); // Dismiss any existing toasts
 
   const handleSaveResults = async () => {
-    //console.log('Saving results:', results, 'to URL:', url);
+    console.log('Saving results:', results, 'to URL:', url);
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : null; // Retrieve the token from localStorage
 
     if (!results || !url) return; // Ensure both results and URL are available
 
@@ -27,7 +22,6 @@ const Dashboard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ url, results }), // Send URL and results to the API
       });
@@ -46,7 +40,7 @@ const Dashboard = () => {
   };
 
   const handleLoginRedirect = () => {
-    alert('Please log in to save results.'); // Notify user to log in
+    toast.info('Please log in to save results.'); // Notify user to log in
     router.push('/login'); // Redirect to the login page
   };
 
