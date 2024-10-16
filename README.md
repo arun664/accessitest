@@ -13,12 +13,23 @@ AccessiTest is a modern web application designed to analyze accessibility issues
 - **Tailwind CSS**: For styling and responsive design, ensuring a modern and user-friendly interface.
 - **React Toastify**: For displaying toast notifications to enhance user experience during login, registration, and other actions.
 
-## Features
+## Current Features
 
-- User registration and login system.
+- User registration
+- User Login
 - Profile management, where users can view and update their account details.
 - JWT-based session management to maintain user authentication.
 - Responsive design for a seamless experience on both desktop and mobile devices.
+- Inspect url using axe-core functionality to find accessibility issues for a url
+- Store the history of those results for user
+- Retrieve the accessibility results and present it to the user
+
+## Pending Features
+
+- Multiple integration
+- Dashboard visualization for each tools
+- Comparison metrics
+- Code fix suggestions using AI SDK
 
 ## Hosting
 
