@@ -33,37 +33,42 @@ const Header = () => {
               </>
             )}
             {loggedIn && (
-              <li className="relative">
-                <button onClick={toggleDropdown} className="flex items-center">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
-                    alt="Profile"
-                    className="h-8 w-8 rounded-full bg-white p-1"
-                  />
-                </button>
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <ul className="py-1">
-                      <li className="px-4 py-2 text-gray-800">
-                        {username} ({email})
-                      </li>
-                      <li>
-                        <Link href="/user/account" className="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white">
-                          Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <button
-                          onClick={logout}
-                          className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white"
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </li>
+              <>
+                <li>
+                  <Link href="/history" className="hover:underline">History</Link>
+                </li>
+                <li className="relative">
+                  <button onClick={toggleDropdown} className="flex items-center">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
+                      alt="Profile"
+                      className="h-8 w-8 rounded-full bg-white p-1"
+                    />
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                      <ul className="py-1">
+                        <li className="px-4 py-2 text-gray-800">
+                          {username} ({email})
+                        </li>
+                        <li>
+                          <Link href="/user/account" className="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white">
+                            Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            onClick={logout}
+                            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              </>
             )}
           </ul>
         </nav>
