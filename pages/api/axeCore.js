@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     await page.goto(url, { waitUntil: "networkidle0" });
 
     // Load the axe-core script
-    const axeScriptPath = path.resolve("./node_modules/axe-core/axe.min.js");
+    const axeScriptPath = path.join(__dirname, 'node_modules', 'axe-core', 'axe.min.js');
     const axeScript = fs.readFileSync(axeScriptPath, "utf-8");
 
     // Inject axe-core into the page
