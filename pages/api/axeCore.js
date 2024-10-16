@@ -1,9 +1,6 @@
 import path from "path";
 import fs from "fs";
 
-const CHROMIUM_PATH =
-  "https://github.com/Sparticuz/chromium/archive/refs/tags/v129.0.0.tar.gz";
-
 async function getBrowser() {
   if (process.env.VERCEL_ENV === "production") {
     const chromium = await import("@sparticuz/chromium-min").then(
@@ -14,7 +11,7 @@ async function getBrowser() {
       (mod) => mod.default
     );
 
-    const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+    const executablePath = await chromium.executablePath();
 
     const browser = await puppeteerCore.launch({
       args: chromium.args,
