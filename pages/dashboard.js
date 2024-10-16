@@ -30,9 +30,9 @@ const Dashboard = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Results saved successfully!');
+        toast.success('Results saved successfully!');
       } else {
-        alert(`Error saving results: ${data.error}`);
+        toast.error(`Error saving results: ${data.error}`);
       }
     } catch (error) {
       console.error('Error:', error);
