@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 
 const CHROMIUM_PATH =
-  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+  "https://github.com/Sparticuz/chromium/archive/refs/tags/v129.0.0.tar.gz";
 
 async function getBrowser() {
   if (process.env.VERCEL_ENV === "production") {
@@ -19,8 +19,9 @@ async function getBrowser() {
     const browser = await puppeteerCore.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath,
-      headless: chromium.headless,
+      executablePath: executablePath,
+			headless: "new",
+			ignoreHTTPSErrors: true,
     });
     return browser;
   } else {
