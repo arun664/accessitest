@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         success: true,
-        token, // Include the token in the response
+        token: token, // Include the token in the response
         userId: userDoc.id, // Return the user ID
         username: userData.username,
         email: userData.email

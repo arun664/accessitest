@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthContext from '@/context/AuthContext'; // Import AuthContext
 
-const LoginForm = () => {
+const LoginForm = ({ handleLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext); // Access login function from AuthContext
@@ -31,17 +31,10 @@ const LoginForm = () => {
       });
 
       const result = await response.json();
-      console.log('Login result:', result);
-
+      
       if (response.ok) {
-        // Call the login function from AuthContext to set token and user data
-        login({
-          userId: result.userId,
-          username: result.username,
-          email: result.email
-        });
-
         toast.success('Login successful!');
+        handleLoginSuccess(result);
       } else {
         toast.error(result.error || 'Login failed. Please try again.');
       }

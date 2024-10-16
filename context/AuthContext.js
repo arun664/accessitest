@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [token, setToken] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,10 +24,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
+    //console.log(userData);
     setLoggedIn(true);
     setUsername(userData.username);
     setEmail(userData.email);
-    localStorage.setItem('token', userData.token);
+    setToken(userData.token);
+    localStorage.setItem('token', token);
     localStorage.setItem('username', userData.username);
     localStorage.setItem('email', userData.email);
     router.push('/'); // Redirect to homepage on login

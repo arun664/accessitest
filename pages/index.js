@@ -30,7 +30,7 @@ export default function Home() {
         // Navigate to results dashboard with axe results
         router.push({
           pathname: '/dashboard',
-          query: { results: JSON.stringify(axeResults) },
+          query: { url: url, results: JSON.stringify(axeResults) },
         });
       } catch (error) {
         console.error('Error:', error);
