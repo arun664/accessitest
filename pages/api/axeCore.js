@@ -1,13 +1,13 @@
-import { chromium } from 'chrome-aws-lambda'; // Use chrome-aws-lambda for serverless environments
-import puppeteerCore from 'puppeteer-core';
-import puppeteer from 'puppeteer';
-import path from 'path';
-import fs from 'fs';
+import { chromium } from "chrome-aws-lambda"; // Use chrome-aws-lambda for serverless environments
+import puppeteerCore from "puppeteer-core";
+import puppeteer from "puppeteer";
+import path from "path";
+import fs from "fs";
 
 async function getBrowser() {
   if (process.env.CURRENT_BUILD === "production") {
     const executablePath = await chromium.executablePath;
-    const browser = await puppeteerCore.launch({
+    const browser = await chromium.puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath,
@@ -27,7 +27,7 @@ const isValidUrl = (string) => {
     new URL(string);
     return true;
   } catch (_) {
-    return false;  
+    return false;
   }
 };
 
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
   // Validate the URL
   if (!url || !isValidUrl(url)) {
-    return res.status(400).json({ error: 'Invalid URL provided.' });
+    return res.status(400).json({ error: "Invalid URL provided." });
   }
 
   try {
@@ -46,15 +46,15 @@ export default async function handler(req, res) {
     const page = await browser.newPage();
 
     // Navigate to the provided URL
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.goto(url, { waitUntil: "networkidle0" });
 
     // Load the axe-core script
-    const axeScriptPath = path.resolve('./node_modules/axe-core/axe.min.js');
-    const axeScript = fs.readFileSync(axeScriptPath, 'utf-8');
+    const axeScriptPath = path.resolve("./node_modules/axe-core/axe.min.js");
+    const axeScript = fs.readFileSync(axeScriptPath, "utf-8");
 
     // Inject axe-core into the page
-    await page.evaluate(axeScript => {
-      const script = document.createElement('script');
+    await page.evaluate((axeScript) => {
+      const script = document.createElement("script");
       script.textContent = axeScript;
       document.head.appendChild(script);
     }, axeScript);
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     // Close the browser
     await browser.close();
   } catch (error) {
-    console.error('Error fetching axe-core results:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching axe-core results:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
