@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/axeCore.js": {
-      "runtime": "nodejs20.17.0"
-    }
-  }
-}
