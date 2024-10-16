@@ -51,13 +51,28 @@ export default async function handler(req, res) {
     // Launch the Chromium browser
     const page = await browser.newPage();
 
-    // Load the axe-core script
-    const axe = require("axe-core");
     // Navigate to the provided URL
     await page.goto(url, { waitUntil: "networkidle0" });
 
-    // Load the axe-core script
-    const axeScript = axe.source; // This will give you the axe-core source
+    let axeScript;
+    try {
+      const axeScriptPath = path.resolve("../../node_modules/axe-core/axe.min.js");
+      axeScript = fs.readFileSync(axeScriptPath, "utf-8");
+
+      // Inject axe-core from local file system
+      await page.evaluate(axeScript => {
+        const script = document.createElement("script");
+        script.textContent = axeScript;
+        document.head.appendChild(script);
+      }, axeScript);
+
+    } catch (err) {
+      console.error("Local axe-core script not found, falling back to CDN", err);
+
+      // If local file fails, fallback to injecting the CDN version
+      await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.4.1/axe.min.js' });
+    }
+
 
     // Inject axe-core into the page
     await page.evaluate((axeScript) => {
