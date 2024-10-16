@@ -1,5 +1,6 @@
 import { collection, query, where, getDocs } from 'firebase/firestore/lite';
 import { db } from '@/config/firebaseConfig';
+import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
   const { email, password } = req.body;
@@ -17,7 +18,20 @@ export default async function handler(req, res) {
     const userData = userDoc.data();
 
     if (userData.password === password) {
-      return res.status(200).json({ success: true, userName: userData.userName });
+      // Generate a token and include the user ID
+      const token = jwt.sign(
+        { id: userDoc.id, email: userData.email, username: userData.username },
+        process.env.SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+
+      return res.status(200).json({
+        success: true,
+        token, // Include the token in the response
+        userId: userDoc.id, // Return the user ID
+        username: userData.username,
+        email: userData.email
+      });
     } else {
       return res.status(401).json({ error: 'Invalid password' });
     }

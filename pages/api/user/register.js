@@ -2,7 +2,7 @@ import { db } from '@/config/firebaseConfig';
 import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore/lite'; // Firestore functions
 
 export default async function handler(req, res) {
-  const { email, userName, password } = req.body;
+  const { email, username, password } = req.body;
 
   try {
     const usersRef = collection(db, 'users');
@@ -13,11 +13,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    const userId = Math.random().toString(36).substr(2, 9);
-
-    await setDoc(doc(db, 'users', userId), {
+    await setDoc(doc(db, 'users', username), {
       email,
-      userName,
+      username,
       password, // Consider hashing this password for security
     });
 

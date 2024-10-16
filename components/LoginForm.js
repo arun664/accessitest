@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import { useRouter } from 'next/router';
+import 'react-toastify/dist/ReactToastify.css';
+import AuthContext from '@/context/AuthContext'; // Import AuthContext
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext); // Access login function from AuthContext
+  const router = useRouter();
 
   const isValidEmail = (email) => {
-    // Regular expression for basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const handleLogin = async () => {
-    // Clear any previous error messages
-    toast.dismiss(); // Dismiss any existing toasts
-
-    // Check if the email is valid
     if (!isValidEmail(email)) {
       toast.error('Please enter a valid email address.');
       return;
@@ -32,20 +31,29 @@ const LoginForm = () => {
       });
 
       const result = await response.json();
+      console.log('Login result:', result);
 
       if (response.ok) {
-        toast.success(`Welcome, ${result.userName}!`);
+        // Call the login function from AuthContext to set token and user data
+        login({
+          userId: result.userId,
+          username: result.username,
+          email: result.email
+        });
+
+        toast.success('Login successful!');
       } else {
-        toast.error(result.error);
+        toast.error(result.error || 'Login failed. Please try again.');
       }
     } catch (err) {
-      toast.error('There was an issue logging in. Please try again later.');
+      console.error('Login error:', err);
+      toast.error('Error logging in. Please try again.');
     }
   };
 
   return (
     <div>
-      <ToastContainer /> {/* Include the ToastContainer to render the notifications */}
+      <ToastContainer />
       <input
         type="email"
         placeholder="Email"

@@ -11,6 +11,7 @@
   "dependencies": {
     "axe-core": "^4.10.0",
     "firebase": "^10.14.1",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.14",
     "nodemailer": "^6.9.15",
     "puppeteer": "^23.5.3",

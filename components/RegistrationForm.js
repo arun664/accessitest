@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast noti
 const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState('');
+  const [username, setUserName] = useState('');
 
   const handleRegister = async () => {
     toast.dismiss(); // Dismiss any existing toasts
@@ -17,7 +17,7 @@ const RegistrationForm = () => {
         },
         body: JSON.stringify({
           email,
-          userName,
+          username,
           password,
         }),
       });
@@ -40,7 +40,7 @@ const RegistrationForm = () => {
       <input
         type="text"
         placeholder="Username"
-        value={userName}
+        value={username}
         onChange={(e) => setUserName(e.target.value)}
         className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
       />
