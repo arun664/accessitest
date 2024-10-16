@@ -35,7 +35,7 @@ AccessiTest is a modern web application designed to analyze accessibility issues
 
 AccessiTest is hosted on [Vercel](https://vercel.com), providing a fast and reliable deployment platform. The live application can be accessed at:
 
-[https://accessitest-ccc6u9f1m-arun664s-projects.vercel.app](https://accessitest-ccc6u9f1m-arun664s-projects.vercel.app)
+[https://accessitest.vercel.app/](https://accessitest.vercel.app/)
 
 ## Getting Started
 
