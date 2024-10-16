@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AccessiTest</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode"> <!-- Set initial mode to dark-mode -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="AccessiTest Logo">
+                <span>ACCESSITEST<span>.com</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Assistance</a></li>
+                <li><a href="#" id="login-btn">Login</a></li>
+                <li>
+                    <div class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Get Actionable Tips on <br> <span>How To Optimize Your Website</span></h1>
+        <div class="search-box">
+            <input type="text" id="url-input" placeholder="PUT URL here...">
+            <button onclick="analyzeUrl()">Analyse</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <i class="icon">🖥️</i>
+            <p>Let us test a web page speed and audit all its critical elements.</p>
+        </div>
+        <div class="line-divider"></div>
+        <div class="feature">
+            <i class="icon">📊</i>
+            <p>Let us test a web page speed and audit all its critical elements.</p>
+        </div>
+        <div class="line-divider"></div>
+        <div class="feature">
+            <i class="icon">⚙️</i>
+            <p>Get free tips on how to improve website speed and performance.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-divider"></div>
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+            <a href="#">Email</a>
+            <a href="#">YouTube</a>
+        </div>
+        <p>Home | News | Contact Us | About | Our Team</p>
+        <p>Copyrights ©2024: Designed by NITHIN</p>
+    </footer>
+
+    <!-- Modal Login Form -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username">
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password">
+            
+            <p>Create an account <a href="#" id="signup-link">signup</a></p>
+            <button class="login-btn">Login</button>
+        </div>
+    </div>
+
+    <!-- Modal Signup Form -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Signup</h2>
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" placeholder="Username">
+            
+            <label for="signup-email">Gmail</label>
+            <input type="email" id="signup-email" placeholder="Gmail">
+
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Password">
+            
+            <label for="signup-repassword">Re-enter Password</label>
+            <input type="password" id="signup-repassword" placeholder="Re-enter Password">
+            
+            <button class="signup-btn">Create</button>
+        </div>
+    </div>
+
+    <!-- Include JavaScript file -->
+    <script src="scripts.js"></script>
+</body>
+</html>

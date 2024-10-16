@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AccessiTest - Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="AccessiTest Logo">
+                <span>ACCESSITEST<span>.com</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Assistance</a></li>
+                <li><a href="#" id="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Analysis Section -->
+    <section class="analysis">
+        <div class="frame-container">
+            <h2>URL Frame</h2>
+            <iframe id="url-frame" width="100%" height="500px" frameborder="0"></iframe>
+            <div id="error-message" style="display: none; color: red; margin-top: 10px;">The site refused to connect or cannot be displayed in an iframe.</div>
+        </div>
+
+        <div class="inspect-list">
+            <h2>Inspect List</h2>
+            <div class="tabs">
+                <button class="tab active">Details</button>
+                <button class="tab">Xpath</button>
+                <button class="tab">Color</button>
+                <button class="tab">Buttons</button>
+                <button class="tab">Code</button>
+                <button class="tab">Alignment</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-divider"></div>
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a></li>
+            <a href="#">Twitter</a></li>
+            <a href="#">Email</a></li>
+            <a href="#">YouTube</a></li>
+        </div>
+        <p>Home | News | Contact Us | About | Our Team</p>
+        <p>Copyrights ©2024: Designed by NITHIN</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const url = params.get('url');
+            
+            if (url && document.getElementById('url-frame')) {
+                const iframe = document.getElementById('url-frame');
+                iframe.src = url;
+
+                // Error handling: Show message if the URL refuses to load
+                iframe.onload = function()
