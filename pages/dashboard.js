@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import AxeCoreResultTable from '@/components/AxeCoreResultTable'; // Adjust the import path based on your project structure
 import AuthContext from '@/context/AuthContext'; // Adjust the import path based on your project structure
@@ -6,10 +6,14 @@ import AuthContext from '@/context/AuthContext'; // Adjust the import path based
 const Dashboard = () => {
   const router = useRouter();
   const { loggedIn } = useContext(AuthContext); // Get loggedIn state from AuthContext
-  const token = localStorage.getItem('token');
-
-  console.log('token:', token);
-  console.log('Router query:', router.query);
+  useEffect(() => {
+    // Check if window is defined (indicating client-side rendering)
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('yourTokenKey');
+      setUserToken(token);
+    }
+  }, []);
+  
   const results = router.query.results ? JSON.parse(router.query.results) : null;
   const url = router.query.url; // Extract URL from query
 
