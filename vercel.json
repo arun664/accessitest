@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/**/*": {
+    "pages/api/axeCore.js": {
       "maxDuration": 60
     }
   }
