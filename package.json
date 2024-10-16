@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@sparticuz/chromium-min": "^129.0.0",
+    "@sparticuz/chromium": "^129.0.0",
     "axe-core": "^4.10.0",
     "chrome-aws-lambda": "^9.1.0",
     "firebase": "^10.14.1",
