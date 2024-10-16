@@ -1,15 +1,10 @@
-import path from "path";
-import fs from "fs";
-
 async function getBrowser() {
   if (process.env.VERCEL_ENV === "production") {
     const chromium = await import("@sparticuz/chromium").then(
       (mod) => mod.default
     );
 
-    const puppeteer = await import("puppeteer-core").then(
-      (mod) => mod.default
-    );
+    const puppeteer = await import("puppeteer-core").then((mod) => mod.default);
 
     chromium.setHeadlessMode = true;
     chromium.setGraphicsMode = false;
@@ -56,12 +51,13 @@ export default async function handler(req, res) {
     // Launch the Chromium browser
     const page = await browser.newPage();
 
+    // Load the axe-core script
+    const axe = require("axe-core");
     // Navigate to the provided URL
     await page.goto(url, { waitUntil: "networkidle0" });
 
     // Load the axe-core script
-    const axeScriptPath = path.join(__dirname, 'node_modules', 'axe-core', 'axe.min.js');
-    const axeScript = fs.readFileSync(axeScriptPath, "utf-8");
+    const axeScript = axe.source; // This will give you the axe-core source
 
     // Inject axe-core into the page
     await page.evaluate((axeScript) => {
