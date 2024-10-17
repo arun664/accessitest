@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const token = req.headers.authorization?.split(' ')[1];
+      const token = localStorage.getItem('token');
       if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       const username = decoded.username; // Get user ID from the token
 
       const historyRef = collection(db, 'history');
-      const userHistoryQuery = query(historyRef, where('username', '==', username));
+      const userHistoryQuery = query(historyRef, where('email', '==', email));
       const querySnapshot = await getDocs(userHistoryQuery);
 
       const historyList = querySnapshot.docs.map(doc => ({
