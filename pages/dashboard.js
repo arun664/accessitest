@@ -22,7 +22,7 @@ const Dashboard = () => {
   const handleSaveResults = async () => {
     
     if (!results || !url) return; // Ensure both results and URL are available
-    
+
     try {
       const response = await fetch('/api/save-history', {
         method: 'POST',
@@ -34,6 +34,10 @@ const Dashboard = () => {
       });
 
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
 
       if (response.ok) {
         toast.success('Results saved successfully!');

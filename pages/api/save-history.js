@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   try {
     // Verify the token
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY); // Ensure SECRET_KEY is defined
-    const { id, username, email } = decodedToken; // Extract user info from token
+    const { id, username } = decodedToken; // Extract user info from token
 
     //console.log('Decoded token:', decodedToken);
 

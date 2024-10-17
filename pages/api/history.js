@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       const email = decoded.email;
 
       const historyRef = collection(db, 'history');
-      const userHistoryQuery = query(historyRef, where('email', '==', email));
+      const userHistoryQuery = query(historyRef, where('username', '==', username));
       const querySnapshot = await getDocs(userHistoryQuery);
 
       const historyList = querySnapshot.docs.map(doc => ({
