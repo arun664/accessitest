@@ -6,15 +6,13 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   const router = useRouter();
-  const { loggedIn } = useContext(AuthContext); // Get loggedIn state from AuthContext
+  const { loggedIn, token } = useContext(AuthContext); // Get loggedIn state from AuthContext
   const results = router.query.results ? JSON.parse(router.query.results) : null;
   const url = router.query.url; // Extract URL from query
   toast.dismiss(); // Dismiss any existing toasts
 
   const handleSaveResults = async () => {
-    console.log('Saving results:', results, 'to URL:', url);
-    const token = localStorage.getItem('token') ? localStorage.getItem('token') : null; // Retrieve the token from localStorage
-
+    
     if (!results || !url) return; // Ensure both results and URL are available
 
     try {
