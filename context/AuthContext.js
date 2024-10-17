@@ -7,33 +7,36 @@ export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState(null);
+  const [storedToken, setToken] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is already logged in (e.g., using localStorage)
-    const token = localStorage.getItem('token');
+    const storedToken = localStorage.getItem("token");
     const storedUsername = localStorage.getItem('username');
     const storedEmail = localStorage.getItem('email');
-    
-    if (token) {
-      setLoggedIn(true);
+
+    if (storedToken) {
+      setToken(storedToken);
       setUsername(storedUsername);
       setEmail(storedEmail);
+      setLoggedIn(true);
     }
   }, []);
 
   const login = (userData) => {
-    //console.log(userData);
     setLoggedIn(true);
     setUsername(userData.username);
     setEmail(userData.email);
     setToken(userData.token);
-    localStorage.setItem('token', token);
+    
+    // Use userData.token directly to store it in localStorage
+    localStorage.setItem('token', userData.token); 
     localStorage.setItem('username', userData.username);
     localStorage.setItem('email', userData.email);
+  
     router.push('/'); // Redirect to homepage on login
   };
+  
 
   const logout = () => {
     setLoggedIn(false);

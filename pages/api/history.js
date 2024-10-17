@@ -6,13 +6,15 @@ import jwt from 'jsonwebtoken';
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const token = localStorage.getItem('token');
+      const authorizationHeader = req.headers.authorization;
+      const token = authorizationHeader && authorizationHeader.split(' ')[1];
       if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
       const username = decoded.username; // Get user ID from the token
+      const email = decoded.email;
 
       const historyRef = collection(db, 'history');
       const userHistoryQuery = query(historyRef, where('email', '==', email));
