@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 async function getBrowser() {
   if (process.env.VERCEL_ENV === "production") {
     const chromium = await import("@sparticuz/chromium").then(
@@ -56,7 +59,7 @@ export default async function handler(req, res) {
 
     let axeScript;
     try {
-      const axeScriptPath = path.resolve("../../node_modules/axe-core/axe.min.js");
+      const axeScriptPath = path.resolve("../node_modules/axe-core/axe.min.js");
       axeScript = fs.readFileSync(axeScriptPath, "utf-8");
 
       // Inject axe-core from local file system

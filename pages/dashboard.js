@@ -1,76 +1,70 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import AxeCoreResultTable from '@/components/AxeCoreResultTable'; // Adjust the import path based on your project structure
 import AuthContext from '@/context/AuthContext'; // Adjust the import path based on your project structure
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   const router = useRouter();
-  const { loggedIn, storedToken } = useContext(AuthContext); // Get loggedIn state from AuthContext
+  const { loggedIn, storedToken } = useContext(AuthContext);
   const results = router.query.results ? JSON.parse(router.query.results) : null;
-  const url = router.query.url; // Extract URL from query
-  toast.dismiss(); // Dismiss any existing toasts
-  let token = '';
-
-  if (!storedToken) {
-    token = localStorage.getItem('token') ? localStorage.getItem('token') : storedToken;
-  }
-  else {
-    token = storedToken;
-  }
+  const url = router.query.url;
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleSaveResults = async () => {
-    
-    if (!results || !url) return; // Ensure both results and URL are available
+    if (!results || !url) return;
+
+    //console.log('Stored Token:', storedToken);
+    setLoading(true); // Start loading
 
     try {
       const response = await fetch('/api/save-history', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${storedToken}`,
         },
-        body: JSON.stringify({ url, results }), // Send URL and results to the API
+        body: JSON.stringify({ url, results }),
       });
 
       const data = await response.json();
+      setLoading(false); // Stop loading
 
       if (!response.ok) {
         throw new Error(data.error);
       }
 
-      if (response.ok) {
-        toast.success('Results saved successfully!');
-      } else {
-        toast.error(`Error saving results: ${data.error}`);
-      }
+      toast.success('Results saved successfully!');
     } catch (error) {
+      setLoading(false); // Stop loading on error
       console.error('Error:', error);
-      alert('Failed to save results.');
+      toast.error('Failed to save results.');
     }
   };
 
   const handleLoginRedirect = () => {
-    toast.info('Please log in to save results.'); // Notify user to log in
-    router.push('/login'); // Redirect to the login page
+    toast.info('Please log in to save results.');
+    router.push('/login');
   };
 
   return (
     <div className="p-6">
+      <ToastContainer /> {/* Toast container to display notifications */}
       <h1 className="text-3xl font-semibold mb-6">Accessibility Test Results</h1>
       {results ? (
         <div className="bg-white p-4 rounded shadow-md">
           <h2 className="text-xl font-bold">Accessibility Score: {results.violations.length === 0 ? 100 : 0}</h2>
           <h3 className="font-semibold">Violations: {results.violations.length}</h3>
-          <AxeCoreResultTable results={results} /> {/* Integrating ResultsTable component */}
+          <AxeCoreResultTable results={results} />
 
-          {/* Show Save Results button only if user is logged in */}
           {loggedIn ? (
             <button
               onClick={handleSaveResults}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+              disabled={loading} // Disable button while loading
             >
-              Save Results
+              {loading ? 'Saving...' : 'Save Results'} {/* Show loading text if loading */}
             </button>
           ) : (
             <button

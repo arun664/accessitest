@@ -11,12 +11,12 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
     const storedEmail = localStorage.getItem('email');
 
-    if (storedToken) {
-      setToken(storedToken);
+    if (token) { 
+      setToken(token);
       setUsername(storedUsername);
       setEmail(storedEmail);
       setLoggedIn(true);
@@ -28,20 +28,20 @@ export const AuthProvider = ({ children }) => {
     setUsername(userData.username);
     setEmail(userData.email);
     setToken(userData.token);
-    
-    // Use userData.token directly to store it in localStorage
+
     localStorage.setItem('token', userData.token); 
     localStorage.setItem('username', userData.username);
     localStorage.setItem('email', userData.email);
-  
-    router.push('/'); // Redirect to homepage on login
+
+    router.push('/');
   };
-  
 
   const logout = () => {
     setLoggedIn(false);
     setUsername('');
     setEmail('');
+    setToken(null);
+
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ loggedIn, username, email, login, logout }}>
+    <AuthContext.Provider value={{ loggedIn, username, email, storedToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
