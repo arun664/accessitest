@@ -59,9 +59,23 @@ export default async function handler(req, res) {
         const existingDocs = await getDocs(existingHistoryQuery);
   
         let version = 1.0;
-  
+
+        console.log(existingDocs);
+
         if (!existingDocs.empty) {
-          version = parseFloat(existingData.version || 0.9) + 0.1;
+          existingDocs.forEach((doc) => {
+            const data = doc.data();
+            if (data.version) {
+              const currentVersion = parseFloat(data.version);
+              if (!isNaN(currentVersion) && currentVersion >= version) {
+                version = currentVersion + 0.1;
+              } else {
+                console.error("Invalid version number, defaulting to 0.1");
+              }
+            } else {
+              console.error("Version property does not exist, defaulting to 0.1");
+            }
+          });
         }
   
         // Create new entry with initial version if no existing document is found
