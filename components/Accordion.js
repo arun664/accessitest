@@ -53,7 +53,9 @@ const Accordion = ({ title, details }) => {
   return (
     <div className="border border-gray-300 rounded mb-2">
       <div
-        className="flex justify-between items-center p-4 cursor-pointer bg-gray-200 hover:bg-gray-300 transition"
+        className={`flex justify-between items-center p-4 cursor-pointer transition ${
+          isOpen ? 'bg-blue-100' : 'bg-gray-200'
+        } hover:bg-gray-300`}
         onClick={toggleAccordion}
       >
         <h2 className="font-semibold">{title}</h2>

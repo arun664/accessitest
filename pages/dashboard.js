@@ -19,7 +19,7 @@ const Dashboard = () => {
     setLoading(true); // Start loading
 
     try {
-      const response = await fetch('/api/save-history', {
+      const response = await fetch('/api/history', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
