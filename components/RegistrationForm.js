@@ -26,6 +26,12 @@ const RegistrationForm = () => {
 
       if (response.ok) {
         toast.success(result.message); // Show success message
+
+        // redirect to login page
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+
       } else {
         toast.error(result.error); // Show error message
       }
