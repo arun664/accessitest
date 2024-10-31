@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useRouter } from "next/router"; // Import useRouter for redirection
+import { toast } from "react-toastify"; // Import toast for notifications
 import Accordion from "@/components/Accordion";
 import ExcelExport from "@/components/ExcelExport";
 import HTMLExport from "@/components/HTMLExport";
 import ChartDisplay from "@/components/ChartDisplay";
+import AuthContext from "@/context/AuthContext";
 
 const HistoryPage = () => {
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  const { logout } = useContext(AuthContext);
 
   // Filter state
   const [urlFilter, setUrlFilter] = useState("");
   const [versionFilter, setVersionFilter] = useState("");
   const [timestampFilter, setTimestampFilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -48,14 +54,16 @@ const HistoryPage = () => {
         }
       } catch (err) {
         console.error("Error fetching history:", err);
-        setError("Failed to fetch history.");
+        logout();
+        toast.warning("Session expired. Please log in again.");
+        router.push("/"); // Redirect to the homepage
       } finally {
         setLoading(false);
       }
     };
 
     fetchHistory();
-  }, []);
+  }, [router]);
 
   const toggleSelection = (item) => {
     setSelectedItems((prev) =>
@@ -99,15 +107,12 @@ const HistoryPage = () => {
     return <div>{error}</div>;
   }
 
-  console.log("Selected Items:", selectedItems);
-
   return (
     <div className="p-4 flex h-screen">
       <div className="flex-1 mr-4 flex flex-col">
-        <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
         <div className="mb-4 flex flex-row space-x-4">
-          
           <div className="w-2/4 flex flex-col space-y-2">
+          <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
             <div className="mb-4">
               <ExcelExport selectedItems={selectedItems} />
               <HTMLExport selectedItems={selectedItems} />
@@ -151,11 +156,16 @@ const HistoryPage = () => {
           </div>
 
           <div className="w-2/4 flex justify-center items-center">
+          <div className='w-full'>
+            <h1 className="font-bold text-center">
+              Chart Display For Selected Items
+            </h1>
             {selectedItems.length > 0 ? (
               <ChartDisplay selectedItems={selectedItems} />
             ) : (
-              <div>No items selected.</div>
+              <div className="text-center">No items selected.</div>
             )}
+            </div>
           </div>
         </div>
 

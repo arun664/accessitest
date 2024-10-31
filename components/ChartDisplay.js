@@ -78,10 +78,7 @@ const ChartDisplay = ({ selectedItems }) => {
   }, [selectedItems]); 
 
   return (
-    <div className='w-full'>
-      <h1 className='font-bold text-center'>Chart Display For Selected Items</h1>
       <Bar data={chartData} options={{ responsive: true }} />
-    </div>
   );
 };
 
