@@ -6,9 +6,7 @@ const Login = () => {
   const { login } = useContext(AuthContext);
 
   const handleLoginSuccess = (userData) => {
-
-    //console.log('Login success:', userData);
-    login(userData); // Pass the login data to the context
+    login(userData);
   };
 
   return (

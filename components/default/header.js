@@ -61,7 +61,10 @@ const Header = () => {
                         </li>
                         <li>
                           <button
-                            onClick={logout}
+                            onClick={() => {
+                              logout(); // Call logout function here to clear profile
+                              setDropdownOpen(false); // Close dropdown after logout
+                            }}
                             className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white"
                           >
                             Logout

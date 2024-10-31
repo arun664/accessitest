@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify'; // Import toast
 
 const AuthContext = createContext();
 
@@ -15,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     const storedUsername = localStorage.getItem('username');
     const storedEmail = localStorage.getItem('email');
 
-    if (token) { 
+    if (token) {
       setToken(token);
       setUsername(storedUsername);
       setEmail(storedEmail);
@@ -29,10 +30,9 @@ export const AuthProvider = ({ children }) => {
     setEmail(userData.email);
     setToken(userData.token);
 
-    localStorage.setItem('token', userData.token); 
+    localStorage.setItem('token', userData.token);
     localStorage.setItem('username', userData.username);
     localStorage.setItem('email', userData.email);
-
     router.push('/');
   };
 
@@ -45,6 +45,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');
+
+    toast.info('You have logged out successfully.'); // Toast notification on successful logout
     router.push('/login'); // Redirect to login page on logout
   };
 
