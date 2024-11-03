@@ -1,10 +1,11 @@
 import React from 'react';
 import * as XLSX from 'xlsx';
+import { toast } from 'react-toastify';
 
 const ExcelExport = ({ selectedItems }) => {
   const exportToExcel = () => {
     if (selectedItems.length === 0) {
-      alert("Please select at least one item to export.");
+      toast.info("Please select at least one item to export.");
       return;
     }
 

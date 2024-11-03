@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -31,7 +30,7 @@ export default function ContactForm() {
       });
 
       if (response.ok) {
-        toast.success('Your request is successful!'); // Show success toast
+        toast.success('Your request is successful!'); 
         setFormData({
           name: '',
           email: '',
@@ -40,17 +39,16 @@ export default function ContactForm() {
           text: '',
         });
       } else {
-        toast.error('Error! Unable to process your request.'); // Show error toast
+        toast.error('Error! Unable to process your request.');
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Error! Unable to process your request.'); // Show general error toast
+      toast.error('Error! Unable to process your request.');
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <ToastContainer /> {/* Include the ToastContainer to render the notifications */}
       <h1 className="text-3xl font-semibold mb-6">Contact Us</h1>
       <form
         onSubmit={handleSubmit}

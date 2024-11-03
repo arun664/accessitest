@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthContext from '@/context/AuthContext'; // Import AuthContext
@@ -46,7 +46,6 @@ const LoginForm = ({ handleLoginSuccess }) => {
 
   return (
     <div>
-      <ToastContainer />
       <input
         type="email"
         placeholder="Email"

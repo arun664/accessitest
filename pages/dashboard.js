@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import AxeCoreResultTable from '@/components/AxeCoreResultTable'; // Adjust the import path based on your project structure
 import AuthContext from '@/context/AuthContext'; // Adjust the import path based on your project structure
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
@@ -50,7 +50,6 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <ToastContainer /> {/* Toast container to display notifications */}
       <h1 className="text-3xl font-semibold mb-6">Accessibility Test Results</h1>
       {results ? (
         <div className="bg-white p-4 rounded shadow-md">

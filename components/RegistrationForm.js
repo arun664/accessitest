@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const RegistrationForm = () => {
@@ -42,7 +42,6 @@ const RegistrationForm = () => {
 
   return (
     <div>
-      <ToastContainer /> {/* Include the ToastContainer to render the notifications */}
       <input
         type="text"
         placeholder="Username"

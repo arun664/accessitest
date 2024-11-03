@@ -4,7 +4,11 @@ import { AuthProvider } from "@/context/AuthContext";
 
 function MyApp({ Component, pageProps }) {
   if (Component.noLayout) {
-    return <Component {...pageProps} />;
+    return (
+      <>
+        <Component {...pageProps} />
+      </>
+    );
   }
 
   return (

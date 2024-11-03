@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Account = () => {
@@ -46,7 +46,6 @@ const Account = () => {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <ToastContainer />
       <h1 className="text-2xl font-semibold mb-4">Account Details</h1>
       <div className="mb-4">
         <label className="block mb-1" htmlFor="username">Username</label>

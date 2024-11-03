@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useRouter } from "next/router"; // Import useRouter for redirection
-import { toast } from "react-toastify"; // Import toast for notifications
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import Accordion from "@/components/Accordion";
 import ExcelExport from "@/components/ExcelExport";
 import HTMLExport from "@/components/HTMLExport";
@@ -12,6 +12,7 @@ const HistoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(false); // New state for "Select All"
   const { logout } = useContext(AuthContext);
 
   // Filter state
@@ -47,16 +48,11 @@ const HistoryPage = () => {
         const data = await response.json();
         setHistoryData(data);
         setFilteredData(data); // Initialize with full data
-
-        // Automatically select the first item if data is available
-        if (data.length > 0) {
-          setSelectedItems([data[0]]);
-        }
       } catch (err) {
         console.error("Error fetching history:", err);
         logout();
         toast.warning("Session expired. Please log in again.");
-        router.push("/"); // Redirect to the homepage
+        router.push("/");
       } finally {
         setLoading(false);
       }
@@ -71,6 +67,15 @@ const HistoryPage = () => {
     );
   };
 
+  const toggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(filteredData);
+    }
+    setIsAllSelected(!isAllSelected);
+  };
+
   // Filter logic
   const applyFilters = () => {
     const newFilteredData = historyData.filter((item) => {
@@ -81,14 +86,15 @@ const HistoryPage = () => {
         ? item.version.toString().includes(versionFilter)
         : true;
       const matchesTimestamp = timestampFilter
-        ? new Date(item.timestamp).toLocaleDateString() ===
-          new Date(timestampFilter).toLocaleDateString()
+        ? new Date(item.timestamp).toISOString().slice(0, 10) ===
+          new Date(timestampFilter).toISOString().slice(0, 10)
         : true;
 
       return matchesUrl && matchesVersion && matchesTimestamp;
     });
     setFilteredData(newFilteredData);
     setSelectedItems([]); // Clear selected items on filter application
+    setIsAllSelected(false);
   };
 
   const clearFilters = () => {
@@ -97,6 +103,7 @@ const HistoryPage = () => {
     setTimestampFilter("");
     setFilteredData(historyData);
     setSelectedItems([]);
+    setIsAllSelected(false);
   };
 
   if (loading) {
@@ -112,9 +119,11 @@ const HistoryPage = () => {
       <div className="flex-1 mr-4 flex flex-col">
         <div className="mb-4 flex flex-row space-x-4">
           <div className="w-2/4 flex flex-col space-y-2">
-          <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
+            <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
             <div className="mb-4">
               <ExcelExport selectedItems={selectedItems} />
+            </div>
+            <div className="mb-4">
               <HTMLExport selectedItems={selectedItems} />
             </div>
 
@@ -156,15 +165,15 @@ const HistoryPage = () => {
           </div>
 
           <div className="w-2/4 flex justify-center items-center">
-          <div className='w-full'>
-            <h1 className="font-bold text-center">
-              Chart Display For Selected Items
-            </h1>
-            {selectedItems.length > 0 ? (
-              <ChartDisplay selectedItems={selectedItems} />
-            ) : (
-              <div className="text-center">No items selected.</div>
-            )}
+            <div className="w-full">
+              <h1 className="font-bold text-center">
+                Chart Display For Selected Items
+              </h1>
+              {selectedItems.length > 0 ? (
+                <ChartDisplay selectedItems={selectedItems} />
+              ) : (
+                <div className="text-center">No items selected.</div>
+              )}
             </div>
           </div>
         </div>
@@ -177,7 +186,15 @@ const HistoryPage = () => {
             <table className="min-w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="border border-gray-300 p-2">Select</th>
+                  <th className="border border-gray-300 p-2">
+                    <input
+                      type="checkbox"
+                      checked={isAllSelected}
+                      onChange={toggleSelectAll}
+                      className="mr-2"
+                    />
+                    Select All
+                  </th>
                   <th className="border border-gray-300 p-2">URL</th>
                   <th className="border border-gray-300 p-2">Version</th>
                   <th className="border border-gray-300 p-2">Timestamp</th>
