@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Accordion from "@/components/Accordion";
 import ExcelExport from "@/components/ExcelExport";
 import HTMLExport from "@/components/HTMLExport";
+import JSONExport from "@/components/JSONExport";
 import ChartDisplay from "@/components/ChartDisplay";
 import AuthContext from "@/context/AuthContext";
 
@@ -122,6 +123,7 @@ const HistoryPage = () => {
             <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
             <div className="mb-4">
               <ExcelExport selectedItems={selectedItems} />
+              <JSONExport selectedItems={selectedItems} />
             </div>
             <div className="mb-4">
               <HTMLExport selectedItems={selectedItems} />
