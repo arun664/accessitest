@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
@@ -6,6 +7,7 @@ const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUserName] = useState('');
+  const router = useRouter();
 
   const handleRegister = async () => {
     toast.dismiss(); // Dismiss any existing toasts
@@ -25,12 +27,15 @@ const RegistrationForm = () => {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(result.message); // Show success message
+        toast.success(result.message);
 
-        // redirect to login page
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+        // Clear form fields
+        setEmail('');
+        setPassword('');
+        setUserName('');
+
+        // Redirect to login page
+        router.push('/login');
 
       } else {
         toast.error(result.error); // Show error message
