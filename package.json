@@ -18,6 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.14",
     "nodemailer": "^6.9.15",
+    "pa11y": "^8.0.0",
     "puppeteer": "^23.6.0",
     "react": "^18",
     "react-axe": "^3.5.4",

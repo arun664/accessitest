@@ -135,6 +135,7 @@ const AxeCoreResultsTable = ({ results }) => {
 
   return (
     <div>
+      <h3 className="font-semibold">Total Violations: {results.violations.length}</h3>
       <h2>Accessibility Test Results</h2>
       <div className="mb-4">
         <button
@@ -142,18 +143,6 @@ const AxeCoreResultsTable = ({ results }) => {
           className={`px-4 py-2 mr-2 rounded ${activeTab === 'violations' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
         >
           Violations
-        </button>
-        <button
-          onClick={() => setActiveTab('general')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'general' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          General Information
-        </button>
-        <button
-          onClick={() => setActiveTab('inapplicable')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'inapplicable' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          Inapplicable Results
         </button>
         <button
           onClick={() => setActiveTab('incomplete')}
@@ -166,6 +155,18 @@ const AxeCoreResultsTable = ({ results }) => {
           className={`px-4 py-2 rounded ${activeTab === 'passing' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
         >
           Passing Results
+        </button>
+        <button
+          onClick={() => setActiveTab('inapplicable')}
+          className={`px-4 py-2 mr-2 rounded ${activeTab === 'inapplicable' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          Inapplicable Results
+        </button>
+        <button
+          onClick={() => setActiveTab('general')}
+          className={`px-4 py-2 mr-2 rounded ${activeTab === 'general' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          General Information
         </button>
       </div>
       {renderTabContent()}
