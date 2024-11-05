@@ -23,16 +23,14 @@ const Dashboard = () => {
 
   // Effect to load results from localStorage on mount
   useEffect(() => {
-    const savedResults = sessionStorage.getItem("results");
-    if (savedResults && !localStorage.getItem("accessibilityResults")) {
-      setResults(JSON.parse(savedResults));
-      localStorage.setItem("accessibilityResults", savedResults);
-    } else if (router.query.results) {
-      const allResults = JSON.parse(router.query.results);
-      setResults(allResults);
-      localStorage.setItem("accessibilityResults", JSON.stringify(allResults));
+    if(localStorage.getItem("accessibilityResults")) {
+      setResults(JSON.parse(localStorage.getItem("accessibilityResults")));
+    } else {
+      toast.error("No results found.");
+      router.push("/");
     }
-  }, [router.query.results]);
+    console.log(results);
+  }, []);
 
   // Handle tool results display
   const displayResults = () => {

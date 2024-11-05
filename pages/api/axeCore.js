@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       }, axeScript);
 
     } catch (err) {
-      console.error("Local axe-core script not found, falling back to CDN", err);
+      //console.error("Local axe-core script not found, falling back to CDN", err);
 
       // If local file fails, fallback to injecting the CDN version
       await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.4.1/axe.min.js' });

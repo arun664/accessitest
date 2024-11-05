@@ -15,6 +15,8 @@ export default function Home() {
   const router = useRouter();
 
   const handleSubmit = async (e) => {
+    localStorage.removeItem("accessibilityResults");
+    localStorage.removeItem("mistralAdvice");
     e.preventDefault();
     if (url.trim() && selectedTools.length > 0) {
       setLoading(true);
@@ -23,17 +25,19 @@ export default function Home() {
 
         if (selectedTools.includes("axe-core")) {
           let axcoreresults = await runAxeCore(url);
+          //console.log("AxeCore Results",axcoreresults);
           results["axe-core-results"] = axcoreresults;
         }
 
         if (selectedTools.includes("pa11y")) {
           let pa11yresults = await runPa11y(url);
+          //console.log("Pa11y Results",pa11yresults);
           results["pa11y-results"] = pa11yresults;
         }
 
         // Save results to sessionStorage
-        sessionStorage.setItem("url", url);
-        sessionStorage.setItem("results", JSON.stringify(results));
+        localStorage.setItem("url", url);
+        localStorage.setItem("accessibilityResults", JSON.stringify(results));
 
         // Navigate to results dashboard
         router.push("/dashboard");
