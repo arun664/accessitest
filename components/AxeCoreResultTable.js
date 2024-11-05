@@ -1,35 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 
 const AxeCoreResultsTable = ({ results }) => {
   const { testEngine, testRunner, testEnvironment, timestamp, url, inapplicable, incomplete, passes, violations } = results;
 
   // State to manage the active tab
   const [activeTab, setActiveTab] = useState('violations'); // Set initial active tab to 'violations'
-  const [violationsWithAdvice, setViolationsWithAdvice] = useState([]);
-
-  useEffect(() => {
-    const fetchAdvice = async () => {
-      // const violationIds = violations.map(v => v.id);
-
-      try {
-        const response = await fetch('/api/advice', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ violations })
-        });
-
-        const data = await response.json();
-        
-        setViolationsWithAdvice(data.mistralAdvice);
-      } catch (error) {
-        // console.error('Error fetching advice:', error);
-      }
-    };
-
-    fetchAdvice();
-  }, [violations]);
 
   // Function to render the content based on the active tab
   const renderTabContent = () => {
@@ -42,23 +17,16 @@ const AxeCoreResultsTable = ({ results }) => {
                 <th className="border border-gray-300">ID</th>
                 <th className="border border-gray-300">Description</th>
                 <th className="border border-gray-300">Help</th>
-                <th className="border border-gray-300">Mistral Advice</th>
               </tr>
             </thead>
             <tbody>
-
-              {violationsWithAdvice?.length > 0 ?(violations.map((violation) => (
+              {violations.map((violation) => (
                 <tr key={violation.id}>
                   <td className="border border-gray-300">{violation.id}</td>
                   <td className="border border-gray-300">{violation.description}</td>
                   <td className="border border-gray-300">{violation.help}</td>
-                  {/* Display the advice for the violation which is in the  violationsWithAdvice which is an array of objects which have violation id and advice as properties*/}
-                  <td className="border border-gray-300">
-                    {violationsWithAdvice.find((item) => item.violation_id === violation.id)?.advice}
-                  </td>
-
                 </tr>
-              ))): <p>Loading advice...</p>}
+              ))}
             </tbody>
           </table>
         );

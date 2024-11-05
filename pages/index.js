@@ -31,11 +31,12 @@ export default function Home() {
           results["pa11y-results"] = pa11yresults;
         }
 
-        // Navigate to results dashboard with results
-        router.push({
-          pathname: "/dashboard",
-          query: { url: url, results: JSON.stringify(results) || results },
-        });
+        // Save results to sessionStorage
+        sessionStorage.setItem("url", url);
+        sessionStorage.setItem("results", JSON.stringify(results));
+
+        // Navigate to results dashboard
+        router.push("/dashboard");
       } catch (error) {
         console.error("Error:", error);
       } finally {
@@ -72,9 +73,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <h1 className="text-3xl font-semibold mb-6">
-        Accessibility Testing Tool
-      </h1>
+      <h1 className="text-3xl font-semibold mb-6">Accessibility Testing Tool</h1>
       {loading ? (
         <LoadingSpinner />
       ) : (

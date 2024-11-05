@@ -1,119 +1,111 @@
-import React, { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
-import AxeCoreResultTable from '@/components/AxeCoreResultTable';
-import Pa11yResultTable from '@/components/Pa11yResultTable';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import AxeCoreResultTable from "@/components/AxeCoreResultTable";
+import Pa11yResultTable from "@/components/Pa11yResultTable";
+import AuthContext from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import CustomMultiSelect from "@/components/CustomMultiSelect";
+
+const tools = [
+  { value: "axe-core", label: "Axe-Core" },
+  { value: "pa11y", label: "Pa11y" },
+];
 
 const Dashboard = () => {
   const router = useRouter();
   const { loggedIn, storedToken } = useContext(AuthContext);
-  const allResults = router.query.results ? JSON.parse(router.query.results) : null;
+  const url = router.query.url;
 
   // State for selected tools
-  const [selectedTools, setSelectedTools] = useState(['axe-core']);
-  const url = router.query.url;
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [selectedTools, setSelectedTools] = useState(["axe-core"]);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState({});
 
-  // Determine which results to display based on selected tools
-  const axeCoreResults = allResults ? allResults["axe-core-results"] : null;
-  const pa11yResults = allResults ? allResults["pa11y-results"] : null;
+  // Effect to load results from localStorage on mount
+  useEffect(() => {
+    const savedResults = localStorage.getItem("accessibilityResults");
+    if (savedResults) {
+      setResults(JSON.parse(savedResults));
+    } else if (router.query.results) {
+      const allResults = JSON.parse(router.query.results);
+      setResults(allResults);
+      localStorage.setItem("accessibilityResults", JSON.stringify(allResults));
+    }
+  }, [router.query.results]);
 
+  // Handle tool results display
   const displayResults = () => {
     const resultsToDisplay = {};
-    
-    if (selectedTools.includes('axe-core') && axeCoreResults) {
-      resultsToDisplay['axe-core'] = axeCoreResults;
+    if (selectedTools.includes("axe-core") && results["axe-core-results"]) {
+      resultsToDisplay["axe-core"] = results["axe-core-results"];
     }
-    
-    if (selectedTools.includes('pa11y') && pa11yResults) {
-      resultsToDisplay['pa11y'] = pa11yResults;
+    if (selectedTools.includes("pa11y") && results["pa11y-results"]) {
+      resultsToDisplay["pa11y"] = results["pa11y-results"];
     }
-    
     return resultsToDisplay;
   };
 
-  const results = displayResults();
+  const currentResults = displayResults();
 
   const handleSaveResults = async () => {
-    if (Object.keys(results).length === 0 || !url) return;
+    if (Object.keys(currentResults).length === 0 || !url) return;
 
-    setLoading(true); // Start loading
+    setLoading(true);
 
     try {
-      const response = await fetch('/api/history', {
-        method: 'POST',
+      const response = await fetch("/api/history", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${storedToken}`,
         },
-        body: JSON.stringify({ url, results }),
+        body: JSON.stringify({ url, results: currentResults }),
       });
 
       const data = await response.json();
-      setLoading(false); // Stop loading
+      setLoading(false);
 
       if (!response.ok) {
         throw new Error(data.error);
       }
 
-      toast.success('Results saved successfully!');
+      toast.success("Results saved successfully!");
     } catch (error) {
-      setLoading(false); // Stop loading on error
-      console.error('Error:', error);
-      toast.error('Failed to save results.');
+      setLoading(false);
+      console.error("Error:", error);
+      toast.error("Failed to save results.");
     }
   };
 
   const handleLoginRedirect = () => {
-    toast.info('Please log in to save results.');
-    router.push('/login');
-  };
-
-  const handleToolChange = (event) => {
-    const value = event.target.value;
-    setSelectedTools(prev => 
-      prev.includes(value) ? prev.filter(tool => tool !== value) : [...prev, value]
-    );
+    toast.info("Please log in to save results.");
+    router.push("/login");
   };
 
   return (
     <div className="p-6">
       <h1 className="text-3xl font-semibold mb-6">Accessibility Test Results</h1>
 
-      {/* Tool Selection UI */}
       <div className="mb-4">
         <h2 className="font-semibold">Select Tools:</h2>
-        <label>
-          <input
-            type="checkbox"
-            value="axe-core"
-            checked={selectedTools.includes('axe-core')}
-            onChange={handleToolChange}
-          />
-          Axe Core
-        </label>
-        <label className="ml-4">
-          <input
-            type="checkbox"
-            value="pa11y"
-            checked={selectedTools.includes('pa11y')}
-            onChange={handleToolChange}
-          />
-          Pa11y
-        </label>
+        <CustomMultiSelect
+          options={tools}
+          selectedOptions={selectedTools}
+          setSelectedOptions={setSelectedTools}
+        />
       </div>
 
-      {Object.keys(results).length > 0 ? (
+      {Object.keys(currentResults).length > 0 ? (
         <div className="bg-white p-4 rounded shadow-md">
-          {Object.entries(results).map(([tool, result]) => (
+          {Object.entries(currentResults).map(([tool, result]) => (
             <div key={tool} className="mb-4">
-              <h2 className="text-xl font-bold">{tool.charAt(0).toUpperCase() + tool.slice(1)} Results:</h2>
-              {tool === 'axe-core' ? (
+              <h2 className="text-xl font-bold">
+                {tool.charAt(0).toUpperCase() + tool.slice(1)} Results:
+              </h2>
+              {tool === "axe-core" ? (
                 <AxeCoreResultTable results={result} />
               ) : (
-                <Pa11yResultTable results={result} /> // Make sure to create this component to display Pa11y results
+                <Pa11yResultTable results={result} />
               )}
             </div>
           ))}
@@ -122,9 +114,9 @@ const Dashboard = () => {
             <button
               onClick={handleSaveResults}
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-              disabled={loading} // Disable button while loading
+              disabled={loading}
             >
-              {loading ? 'Saving...' : 'Save Results'} {/* Show loading text if loading */}
+              {loading ? "Saving..." : "Save Results"}
             </button>
           ) : (
             <button
@@ -138,6 +130,19 @@ const Dashboard = () => {
       ) : (
         <p>No results available.</p>
       )}
+
+      <div className="mt-6 p-4 bg-gray-100 rounded">
+        <h2 className="text-xl font-semibold mb-2">Mistral AI Suggestions</h2>
+        <p>Note: Mistral AI provides suggestions for Axe-Core results only.</p>
+        <button
+          onClick={async () => {
+            router.push("/mistral-ai-results");
+          }}
+          className="mt-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700"
+        >
+          Request Mistral AI Suggestions
+        </button>
+      </div>
     </div>
   );
 };
