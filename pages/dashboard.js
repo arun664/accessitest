@@ -131,7 +131,7 @@ const Dashboard = () => {
         <p>No results available.</p>
       )}
 
-      <div className="mt-6 p-4 bg-gray-100 rounded">
+      <div className="mt-6 p-4 bg-gray-100 rounded dark:bg-gray-800">
         <h2 className="text-xl font-semibold mb-2">Mistral AI Suggestions</h2>
         <p>Note: Mistral AI provides suggestions for Axe-Core results only.</p>
         <button
