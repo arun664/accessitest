@@ -45,6 +45,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');
+    localStorage.removeItem('accessibilityResults');
+    localStorage.removeItem('mistralAdvice');
 
     toast.info('You have logged out successfully.'); // Toast notification on successful logout
     router.push('/login'); // Redirect to login page on logout
