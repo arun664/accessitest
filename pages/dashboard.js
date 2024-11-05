@@ -23,9 +23,10 @@ const Dashboard = () => {
 
   // Effect to load results from localStorage on mount
   useEffect(() => {
-    const savedResults = localStorage.getItem("accessibilityResults");
-    if (savedResults) {
+    const savedResults = sessionStorage.getItem("results");
+    if (savedResults && !localStorage.getItem("accessibilityResults")) {
       setResults(JSON.parse(savedResults));
+      localStorage.setItem("accessibilityResults", savedResults);
     } else if (router.query.results) {
       const allResults = JSON.parse(router.query.results);
       setResults(allResults);
@@ -84,32 +85,20 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-semibold mb-6">Accessibility Test Results</h1>
+      <h1 className="text-3xl font-semibold mb-6">
+        Accessibility Test Results
+      </h1>
 
-      <div className="mb-4">
-        <h2 className="font-semibold">Select Tools:</h2>
-        <CustomMultiSelect
-          options={tools}
-          selectedOptions={selectedTools}
-          setSelectedOptions={setSelectedTools}
-        />
-      </div>
-
-      {Object.keys(currentResults).length > 0 ? (
-        <div className="bg-white p-4 rounded shadow-md">
-          {Object.entries(currentResults).map(([tool, result]) => (
-            <div key={tool} className="mb-4">
-              <h2 className="text-xl font-bold">
-                {tool.charAt(0).toUpperCase() + tool.slice(1)} Results:
-              </h2>
-              {tool === "axe-core" ? (
-                <AxeCoreResultTable results={result} />
-              ) : (
-                <Pa11yResultTable results={result} />
-              )}
-            </div>
-          ))}
-
+      <div className="flex flex-row mb-4">
+        <div>
+          <h2 className="font-semibold">Select Tools:</h2>
+          <CustomMultiSelect
+            options={tools}
+            selectedOptions={selectedTools}
+            setSelectedOptions={setSelectedTools}
+          />
+        </div>
+        <div className="ml-auto">
           {loggedIn ? (
             <button
               onClick={handleSaveResults}
@@ -126,6 +115,23 @@ const Dashboard = () => {
               Login to Save Results
             </button>
           )}
+        </div>
+      </div>
+
+      {Object.keys(currentResults).length > 0 ? (
+        <div className="bg-white p-4 rounded shadow-md">
+          {Object.entries(currentResults).map(([tool, result]) => (
+            <div key={tool} className="mb-4">
+              <h2 className="text-xl font-bold">
+                {tool.charAt(0).toUpperCase() + tool.slice(1)} Results:
+              </h2>
+              {tool === "axe-core" ? (
+                <AxeCoreResultTable results={result} />
+              ) : (
+                <Pa11yResultTable results={result} />
+              )}
+            </div>
+          ))}
         </div>
       ) : (
         <p>No results available.</p>
