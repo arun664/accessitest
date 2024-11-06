@@ -15,9 +15,15 @@ const Login = () => {
         <h1 className="text-3xl font-bold text-center mb-6 text-blue-600 dark:text-blue-400">Login</h1>
         <LoginForm handleLoginSuccess={handleLoginSuccess} />
         <p className="text-center text-gray-500 dark:text-gray-300 mt-4">
-          Don't have an account?{' '}
+          Don't have an account ?{' '}
           <a href="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
             Register here
+          </a>
+        </p>
+        <p className="text-center text-gray-500 dark:text-gray-300 mt-4">
+          Forgot password ?{' '}
+          <a href="/forgot-password" className="text-blue-600 dark:text-blue-400 hover:underline">
+            Reset Password
           </a>
         </p>
       </div>
