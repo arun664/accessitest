@@ -17,6 +17,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     localStorage.removeItem("accessibilityResults");
     localStorage.removeItem("mistralAdvice");
+    localStorage.removeItem("url");
     e.preventDefault();
     if (url.trim() && selectedTools.length > 0) {
       setLoading(true);

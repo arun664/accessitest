@@ -89,8 +89,14 @@ export default async function handler(req, res) {
       return await axe.run();
     });
 
+    const removeInapplicableResults = (results) => {
+      // Exclude the "inapplicable" property from the axe-core results
+      const { inapplicable, ...filteredResults } = results;
+      return filteredResults;
+    };
+
     // Send back the axe results
-    res.status(200).json(axeResults);
+    res.status(200).json(removeInapplicableResults(axeResults));
 
     // Close the browser
     await browser.close();
