@@ -36,6 +36,7 @@ export default function Home() {
 
         localStorage.setItem("url", url);
         localStorage.setItem("accessibilityResults", JSON.stringify(results));
+        localStorage.setItem("selectedtools", JSON.stringify(selectedTools));
 
         router.push("/dashboard");
       } catch (error) {
