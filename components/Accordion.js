@@ -1,7 +1,6 @@
-// components/Accordion.js
 import React, { useState } from 'react';
 
-const Accordion = ({ title, details }) => {
+const Accordion = ({ title, details, tool }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreViolations, setShowMoreViolations] = useState(false);
   const [showMorePasses, setShowMorePasses] = useState(false);
@@ -11,7 +10,15 @@ const Accordion = ({ title, details }) => {
     setIsOpen(!isOpen);
   };
 
-  const MAX_LENGTH = 3; // Set a threshold for showing "Show More" button
+  const MAX_LENGTH = 3;
+  console.log(details);
+  console.log(title);
+
+  // Determine if response is from Pa11y by checking if 'issues' exists
+  let isPa11yResponse = null;
+  if (tool === 'pa11y') {
+    isPa11yResponse = true;
+  }
 
   const renderDetails = (items, showMore) => {
     return (
@@ -31,13 +38,13 @@ const Accordion = ({ title, details }) => {
           {(showMore ? items : items.slice(0, MAX_LENGTH)).map((item, index) => (
             <tr key={index}>
               <td className="border border-gray-300 p-2">{item.description}</td>
-              <td className="border border-gray-300 p-2">{item.help}</td>
+              <td className="border border-gray-300 p-2">{item.help || item.message}</td>
               <td className="border border-gray-300 p-2">
-                <a href={item.helpUrl} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                <a href={item.helpUrl || item.codeUrl} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                   Help Link
                 </a>
               </td>
-              <td className="border border-gray-300 p-2">{item.id}</td>
+              <td className="border border-gray-300 p-2">{item.id || item.code}</td>
               <td className="border border-gray-300 p-2">{item.impact || 'N/A'}</td>
               <td className="border border-gray-300 p-2">
                 <pre className="whitespace-pre-wrap">{item.html}</pre>
@@ -63,11 +70,13 @@ const Accordion = ({ title, details }) => {
       </div>
       {isOpen && (
         <div className="p-4">
-          <p><strong>Timestamp:</strong> {new Date(details.timestamp).toLocaleString()}</p>
+          {/* <p><strong>Timestamp:</strong> {new Date(details.timestamp).toLocaleString()}</p> */}
           <div className="mt-4">
-            <h3 className="font-semibold">Violations ({details.violations.length})</h3>
-            {renderDetails(details.violations, showMoreViolations)}
-            {details.violations.length > MAX_LENGTH && (
+            <h3 className="font-semibold">
+              Violations ({isPa11yResponse ? details.result.issues.length : details.result.violations.length})
+            </h3>
+            {renderDetails(isPa11yResponse ? details.result.issues : details.result.violations, showMoreViolations)}
+            {(isPa11yResponse ? details.result.issues.length : details.result.violations.length) > MAX_LENGTH && (
               <button
                 onClick={() => setShowMoreViolations(!showMoreViolations)}
                 className="text-blue-500 mt-2"
@@ -76,30 +85,34 @@ const Accordion = ({ title, details }) => {
               </button>
             )}
           </div>
-          <div className="mt-4">
-            <h3 className="font-semibold">Passes ({details.passes.length})</h3>
-            {renderDetails(details.passes, showMorePasses)}
-            {details.passes.length > MAX_LENGTH && (
-              <button
-                onClick={() => setShowMorePasses(!showMorePasses)}
-                className="text-blue-500 mt-2"
-              >
-                {showMorePasses ? 'Show Less' : 'Show More'}
-              </button>
-            )}
-          </div>
-          <div className="mt-4">
-            <h3 className="font-semibold">Incomplete ({details.incomplete.length})</h3>
-            {renderDetails(details.incomplete, showMoreIncomplete)}
-            {details.incomplete.length > MAX_LENGTH && (
-              <button
-                onClick={() => setShowMoreIncomplete(!showMoreIncomplete)}
-                className="text-blue-500 mt-2"
-              >
-                {showMoreIncomplete ? 'Show Less' : 'Show More'}
-              </button>
-            )}
-          </div>
+          {!isPa11yResponse && (
+            <>
+              <div className="mt-4">
+                <h3 className="font-semibold">Passes ({details.result.passes.length})</h3>
+                {renderDetails(details.result.passes, showMorePasses)}
+                {details.result.passes.length > MAX_LENGTH && (
+                  <button
+                    onClick={() => setShowMorePasses(!showMorePasses)}
+                    className="text-blue-500 mt-2"
+                  >
+                    {showMorePasses ? 'Show Less' : 'Show More'}
+                  </button>
+                )}
+              </div>
+              <div className="mt-4">
+                <h3 className="font-semibold">Incomplete ({details.result.incomplete.length})</h3>
+                {renderDetails(details.result.incomplete, showMoreIncomplete)}
+                {details.result.incomplete.length > MAX_LENGTH && (
+                  <button
+                    onClick={() => setShowMoreIncomplete(!showMoreIncomplete)}
+                    className="text-blue-500 mt-2"
+                  >
+                    {showMoreIncomplete ? 'Show Less' : 'Show More'}
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

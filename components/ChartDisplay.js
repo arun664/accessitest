@@ -15,70 +15,101 @@ import 'chartjs-plugin-datalabels';
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const ChartDisplay = ({ selectedItems }) => {
-
   const [chartData, setChartData] = useState({
-    labels: ['Total Violations', 'Total Incomplete', 'Total Passed'],
+    labels: ['Total Axe-Core Violations', 'Total Pa11y Issues'],
     datasets: [
       {
-        label: 'Counts',
-        data: [0, 0, 0],
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        label: 'Axe-Core',
+        data: [0, 0],  // Axe-Core Violations, Pa11y Issues
+        backgroundColor: 'rgba(255, 99, 132, 0.6)', // Red for Axe-Core Violations
+      },
+      {
+        label: 'Pa11y',
+        data: [0, 0],  // Pa11y Violations
+        backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue for Pa11y Issues
       },
     ],    
   });
 
   useEffect(() => {
-    // Ensure selectedItems is an array before processing
     if (Array.isArray(selectedItems) && selectedItems.length > 0) {
-      // Calculate totals based on selected items
-      const totalViolations = selectedItems.reduce(
-        (total, item) => total + item.violations.length,
-        0
-      );
-      const totalIncomplete = selectedItems.reduce(
-        (total, item) => total + item.incomplete.length,
-        0
-      );
-      const totalPassed = selectedItems.reduce(
-        (total, item) => total + item.passes.length,
-        0
-      );
+      let axeViolations = 0;
+      let pa11yIssues = 0;
+
+      selectedItems.forEach((item) => {
+        // Handle Axe-Core violations, Pa11y issues
+        const violations = item.violations || [];
+        const issues = item.issues || [];
+
+        // Count Axe-Core Violations and Pa11y Issues separately
+        axeViolations += violations.length;
+        pa11yIssues += issues.length;
+      });
 
       setChartData({
-        labels: ['Total Violations', 'Total Incomplete', 'Total Passed'],
+        labels: ['Total Axe-Core Violations', 'Total Pa11y Issues'],
         datasets: [
           {
-            label: 'Counts',
-            data: [totalViolations, totalIncomplete, totalPassed],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.6)', // Red for Total Violations
-              'rgba(255, 206, 86, 0.6)', // Yellow for Total Incomplete
-              'rgba(75, 192, 192, 0.6)', // Teal for Total Passed
-            ],
+            label: 'Axe-Core',
+            data: [axeViolations, 0],  // Only Axe-Core Violations for this dataset
+            backgroundColor: 'rgba(255, 99, 132, 0.6)', // Red for Axe-Core Violations
+          },
+          {
+            label: 'Pa11y',
+            data: [0, pa11yIssues], // Only Pa11y Issues for this dataset
+            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue for Pa11y Issues
           },
         ],
       });
     } else {
-      // Reset chart data when there are no selected items
+      // Reset chart data if no items are selected
       setChartData({
-        labels: ['Total Violations', 'Total Incomplete', 'Total Passed'],
+        labels: ['Total Axe-Core Violations', 'Total Pa11y Issues'],
         datasets: [
           {
-            label: 'Counts',
-            data: [0, 0, 0], 
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(255, 206, 86, 0.6)', 
-              'rgba(75, 192, 192, 0.6)',
-            ],
+            label: 'Axe-Core',
+            data: [0, 0],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)', // Red
+          },
+          {
+            label: 'Pa11y',
+            data: [0, 0],
+            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue
           },
         ],
       });
     }
-  }, [selectedItems]); 
+  }, [selectedItems]);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      datalabels: {
+        display: true,
+        color: 'black',  // Color of the label
+        align: 'center', // Align the label in the center of the bar
+        anchor: 'center', // Anchor the label at the center of the bar
+        formatter: (value) => value, // Display the count value
+        font: {
+          weight: 'bold',
+        },
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: false,  // Remove unnecessary zero from X-axis
+      },
+      y: {
+        beginAtZero: true,  // Ensure Y-axis starts at zero
+      },
+    },
+  };
 
   return (
-      <Bar data={chartData} options={{ responsive: true }} />
+    <>
+      <h2>Violations Breakdown</h2>
+      <Bar data={chartData} options={options} />
+    </>
   );
 };
 

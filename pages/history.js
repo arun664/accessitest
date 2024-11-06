@@ -13,13 +13,14 @@ const HistoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [isAllSelected, setIsAllSelected] = useState(false); // New state for "Select All"
+  const [isAllSelected, setIsAllSelected] = useState(false);
   const { logout } = useContext(AuthContext);
 
   // Filter state
   const [urlFilter, setUrlFilter] = useState("");
   const [versionFilter, setVersionFilter] = useState("");
   const [timestampFilter, setTimestampFilter] = useState("");
+  const [toolFilter, setToolFilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   const router = useRouter();
@@ -48,7 +49,7 @@ const HistoryPage = () => {
 
         const data = await response.json();
         setHistoryData(data);
-        setFilteredData(data); // Initialize with full data
+        setFilteredData(data);
       } catch (err) {
         console.error("Error fetching history:", err);
         logout();
@@ -77,7 +78,6 @@ const HistoryPage = () => {
     setIsAllSelected(!isAllSelected);
   };
 
-  // Filter logic
   const applyFilters = () => {
     const newFilteredData = historyData.filter((item) => {
       const matchesUrl = item.url
@@ -90,11 +90,14 @@ const HistoryPage = () => {
         ? new Date(item.timestamp).toISOString().slice(0, 10) ===
           new Date(timestampFilter).toISOString().slice(0, 10)
         : true;
+      const matchesTool = toolFilter
+        ? item.tool?.toLowerCase().includes(toolFilter.toLowerCase())
+        : true;
 
-      return matchesUrl && matchesVersion && matchesTimestamp;
+      return matchesUrl && matchesVersion && matchesTimestamp && matchesTool;
     });
     setFilteredData(newFilteredData);
-    setSelectedItems([]); // Clear selected items on filter application
+    setSelectedItems([]);
     setIsAllSelected(false);
   };
 
@@ -102,6 +105,7 @@ const HistoryPage = () => {
     setUrlFilter("");
     setVersionFilter("");
     setTimestampFilter("");
+    setToolFilter("");
     setFilteredData(historyData);
     setSelectedItems([]);
     setIsAllSelected(false);
@@ -150,6 +154,13 @@ const HistoryPage = () => {
               onChange={(e) => setTimestampFilter(e.target.value)}
               className="border p-2 text-black dark:bg-gray-900 dark:text-white"
             />
+            <input
+              type="text"
+              placeholder="Filter by Tool"
+              value={toolFilter}
+              onChange={(e) => setToolFilter(e.target.value)}
+              className="border p-2"
+            />
             <div className="flex space-x-2 mt-2">
               <button
                 onClick={applyFilters}
@@ -172,7 +183,7 @@ const HistoryPage = () => {
                 Chart Display For Selected Items
               </h1>
               {selectedItems.length > 0 ? (
-                <ChartDisplay selectedItems={selectedItems} />
+                <ChartDisplay selectedItems={selectedItems.map((item) => item.result)} />
               ) : (
                 <div className="text-center">No items selected.</div>
               )}
@@ -180,7 +191,6 @@ const HistoryPage = () => {
           </div>
         </div>
 
-        {/* Table to display filtered history items */}
         <div className="flex-1 overflow-y-auto">
           {filteredData.length === 0 ? (
             <p>No history found.</p>
@@ -200,11 +210,12 @@ const HistoryPage = () => {
                   <th className="border border-gray-300 p-2">URL</th>
                   <th className="border border-gray-300 p-2">Version</th>
                   <th className="border border-gray-300 p-2">Timestamp</th>
+                  <th className="border border-gray-300 p-2">Tool</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-100">
+                  <tr key={item.userId} className="hover:bg-gray-100">
                     <td className="border border-gray-300 p-2">
                       <input
                         type="checkbox"
@@ -214,13 +225,16 @@ const HistoryPage = () => {
                       />
                     </td>
                     <td className="border border-gray-300 p-2">
-                      <Accordion title={item.url} details={item} />
+                      <Accordion title={item.url} details={item} tool={item.tool}/>
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.version}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {new Date(item.timestamp).toLocaleString()}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      {item.tool || "N/A"}
                     </td>
                   </tr>
                 ))}

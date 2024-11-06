@@ -27,7 +27,6 @@ const Dashboard = () => {
       setResults(JSON.parse(localStorage.getItem("accessibilityResults")));
       setUrl(localStorage.getItem("url"));
     } else {
-      toast.error("No results found.");
       router.push("/");
     }
   }, []);
@@ -45,34 +44,44 @@ const Dashboard = () => {
   };
 
   const currentResults = displayResults();
-
   const handleSaveResults = async () => {
-    if (!currentResults) {
-      toast.error("Please select the tool to save its results.");
+    // Check if URL and results are available and valid
+    if (!url) {
+      toast.error("No URL found.");
       return;
-    } else if (!url) {
-      toast.error("No results found.");
+    }
+    if (!results || typeof results !== 'object' || Object.keys(results).length === 0) {
+      toast.error("No results found to save.");
       return;
     }
   
     setLoading(true);
   
     try {
-      // Loop through each result object within `results`
-      for (const [tool, result] of Object.entries(results)) {
-
-        console.log("Saving results for tool:", tool);
-        console.log("Results:", result);
-        console.log("URL:", url);
-        
+      // Iterate over each tool and its result in `currentResults` (only selected tools)
+      for (const [tool, result] of Object.entries(currentResults)) {
+        if (!result) {
+          console.warn(`No result found for tool: ${tool}`);
+          continue; // Skip if result is empty or undefined
+        }
+  
+        //console.log("Saving results for tool:", tool);
+        //console.log("Results:", result);
+        //console.log("URL:", url);
+  
+        const requestData = {
+          url,
+          tool,
+          result,
+        };
+  
         const response = await fetch("/api/history", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${storedToken}`,
           },
-          // Send each individual result object in the body
-          body: JSON.stringify({ url, tool, result }),
+          body: JSON.stringify(requestData),
         });
   
         const data = await response.json();
@@ -82,12 +91,12 @@ const Dashboard = () => {
         }
       }
   
-      setLoading(false);
       toast.success("All results saved successfully!");
     } catch (error) {
-      setLoading(false);
       console.error("Error:", error);
       toast.error("Failed to save results.");
+    } finally {
+      setLoading(false);
     }
   };
   

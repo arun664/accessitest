@@ -26,21 +26,17 @@ export default function Home() {
 
         if (selectedTools.includes("axe-core")) {
           let axcoreresults = await runAxeCore(url);
-          //console.log("AxeCore Results",axcoreresults);
           results["axe-core-results"] = axcoreresults;
         }
 
         if (selectedTools.includes("pa11y")) {
           let pa11yresults = await runPa11y(url);
-          //console.log("Pa11y Results",pa11yresults);
           results["pa11y-results"] = pa11yresults;
         }
 
-        // Save results to sessionStorage
         localStorage.setItem("url", url);
         localStorage.setItem("accessibilityResults", JSON.stringify(results));
 
-        // Navigate to results dashboard
         router.push("/dashboard");
       } catch (error) {
         console.error("Error:", error);
