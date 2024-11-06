@@ -17,13 +17,14 @@ const Dashboard = () => {
   const [url, setUrl] = useState("");
 
   // State for selected tools
-  const [selectedTools, setSelectedTools] = useState(JSON.parse(localStorage.getItem("selectedtools")) || ["axe-core"]);
+  const [selectedTools, setSelectedTools] = useState(["axe-core"]);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState({});
 
   // Effect to load results from localStorage on mount
   useEffect(() => {
     if(localStorage.getItem("accessibilityResults")) {
+      setSelectedTools(JSON.parse(localStorage.getItem("selectedtools")));
       setResults(JSON.parse(localStorage.getItem("accessibilityResults")));
       setUrl(localStorage.getItem("url"));
     } else {
