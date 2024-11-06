@@ -14,7 +14,7 @@ const tools = [
 const Dashboard = () => {
   const router = useRouter();
   const { loggedIn, storedToken } = useContext(AuthContext);
-  const url = router.query.url;
+  const [url, setUrl] = useState("");
 
   // State for selected tools
   const [selectedTools, setSelectedTools] = useState(["axe-core"]);
@@ -25,11 +25,11 @@ const Dashboard = () => {
   useEffect(() => {
     if(localStorage.getItem("accessibilityResults")) {
       setResults(JSON.parse(localStorage.getItem("accessibilityResults")));
+      setUrl(localStorage.getItem("url"));
     } else {
       toast.error("No results found.");
       router.push("/");
     }
-    console.log(results);
   }, []);
 
   // Handle tool results display
@@ -47,34 +47,50 @@ const Dashboard = () => {
   const currentResults = displayResults();
 
   const handleSaveResults = async () => {
-    if (Object.keys(currentResults).length === 0 || !url) return;
-
+    if (!currentResults) {
+      toast.error("Please select the tool to save its results.");
+      return;
+    } else if (!url) {
+      toast.error("No results found.");
+      return;
+    }
+  
     setLoading(true);
-
+  
     try {
-      const response = await fetch("/api/history", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${storedToken}`,
-        },
-        body: JSON.stringify({ url, results: currentResults }),
-      });
+      // Loop through each result object within `results`
+      for (const [tool, result] of Object.entries(results)) {
 
-      const data = await response.json();
-      setLoading(false);
-
-      if (!response.ok) {
-        throw new Error(data.error);
+        console.log("Saving results for tool:", tool);
+        console.log("Results:", result);
+        console.log("URL:", url);
+        
+        const response = await fetch("/api/history", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+          // Send each individual result object in the body
+          body: JSON.stringify({ url, tool, result }),
+        });
+  
+        const data = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to save a result.");
+        }
       }
-
-      toast.success("Results saved successfully!");
+  
+      setLoading(false);
+      toast.success("All results saved successfully!");
     } catch (error) {
       setLoading(false);
       console.error("Error:", error);
       toast.error("Failed to save results.");
     }
   };
+  
 
   const handleLoginRedirect = () => {
     toast.info("Please log in to save results.");

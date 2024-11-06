@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const AxeCoreResultsTable = ({ results }) => {
-  const { testEngine, testRunner, testEnvironment, timestamp, url, inapplicable, incomplete, passes, violations } = results;
+  const { testEngine, testRunner, testEnvironment, timestamp, url, incomplete, passes, violations } = results;
 
   // State to manage the active tab
   const [activeTab, setActiveTab] = useState('violations'); // Set initial active tab to 'violations'
@@ -62,27 +62,6 @@ const AxeCoreResultsTable = ({ results }) => {
                   <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
                 </td>
               </tr>
-            </tbody>
-          </table>
-        );
-      case 'inapplicable':
-        return (
-          <table className="min-w-full border-collapse border border-gray-300">
-            <thead>
-              <tr>
-                <th className="border border-gray-300">ID</th>
-                <th className="border border-gray-300">Description</th>
-                <th className="border border-gray-300">Help</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inapplicable.map((item) => (
-                <tr key={item.id}>
-                  <td className="border border-gray-300">{item.id}</td>
-                  <td className="border border-gray-300">{item.description}</td>
-                  <td className="border border-gray-300">{item.help}</td>
-                </tr>
-              ))}
             </tbody>
           </table>
         );
@@ -155,12 +134,6 @@ const AxeCoreResultsTable = ({ results }) => {
           className={`px-4 py-2 rounded ${activeTab === 'passing' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
         >
           Passing Results
-        </button>
-        <button
-          onClick={() => setActiveTab('inapplicable')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'inapplicable' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
-        >
-          Inapplicable Results
         </button>
         <button
           onClick={() => setActiveTab('general')}
