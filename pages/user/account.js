@@ -7,6 +7,7 @@ const Account = () => {
   const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isDeleteHistoryModalOpen, setIsDeleteHistoryModalOpen] = useState(false); // New state for delete history modal
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -33,6 +34,12 @@ const Account = () => {
     setCurrentPassword('');
     setNewPassword('');
     setConfirmNewPassword('');
+  };
+
+  const openDeleteHistoryModal = () => setIsDeleteHistoryModalOpen(true); // Open delete history modal
+  const closeDeleteHistoryModal = () => {
+    setIsDeleteHistoryModalOpen(false);
+    setCurrentPassword('');
   };
 
   const handlePasswordConfirm = async () => {
@@ -118,6 +125,31 @@ const Account = () => {
     }
   };
 
+  const handleDeleteHistory = async () => {
+    const token = localStorage.getItem('token'); // Get the JWT token from localStorage
+
+    try {
+      const response = await fetch('/api/history', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        toast.success('History deleted successfully!');
+        closeDeleteHistoryModal(); // Close modal after successful deletion
+      } else {
+        const result = await response.json();
+        toast.error(result.error || 'Failed to delete history.');
+      }
+    } catch (err) {
+      console.error('Error deleting history:', err);
+      toast.error('Error deleting history. Please try again.');
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto p-4 bg-white dark:bg-gray-900 rounded shadow-lg">
       <h1 className="text-2xl font-semibold mb-4 dark:text-white">Account Details</h1>
@@ -153,6 +185,36 @@ const Account = () => {
       >
         Update Password
       </button>
+      <button
+        onClick={openDeleteHistoryModal} // Open delete history modal
+        className="bg-red-600 text-white p-3 rounded w-full mt-4 hover:bg-red-700 transition duration-200"
+      >
+        Delete History
+      </button>
+
+      {/* Delete History Confirmation Modal */}
+      {isDeleteHistoryModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white dark:bg-gray-900 p-4 rounded shadow-lg w-full max-w-sm">
+            <h2 className="text-lg font-semibold mb-2 dark:text-white">Confirm to Delete History</h2>
+            <p className="mb-4 dark:text-gray-300">Please enter your password to confirm the deletion of your history.</p>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
+            />
+            <div className="flex justify-end mt-4">
+              <button onClick={handleDeleteHistory} className="bg-red-600 text-white p-2 rounded mr-2 hover:bg-red-700 transition duration-200">
+                Confirm
+              </button>
+              <button onClick={closeDeleteHistoryModal} className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700 transition duration-200">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Email Update Password Confirmation Modal */}
       {isModalOpen && (
@@ -177,44 +239,35 @@ const Account = () => {
         </div>
       )}
 
-      {/* Update Password Modal */}
+      {/* Password Update Modal */}
       {isPasswordModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-blue-100 bg-opacity-50">
-          <div className="bg-white dark:bg-black p-4 rounded shadow-lg w-full max-w-sm">
-            <h2 className="text-lg font-semibold mb-4 dark:text-white">Update Password</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white dark:bg-gray-900 p-4 rounded shadow-lg w-full max-w-sm">
+            <h2 className="text-lg font-semibold mb-2 dark:text-white">Update Password</h2>
             <input
               type="password"
-              placeholder="Current Password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="border border-gray-300 p-3 rounded w-full mb-3 dark:bg-gray-900 dark:text-white"
+              placeholder="Current Password"
+              className="border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
             />
             <input
-              type={isPasswordVisible ? "text" : "password"}
-              placeholder="New Password"
+              type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="border border-gray-300 p-3 rounded w-full mb-3 dark:bg-gray-900 dark:text-white"
+              placeholder="New Password"
+              className="border border-gray-300 p-3 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
             />
             <input
-              type={isPasswordVisible ? "text" : "password"}
-              placeholder="Confirm New Password"
+              type="password"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
-              className="border border-gray-300 p-3 rounded w-full mb-3 dark:bg-gray-900 dark:text-white"
+              placeholder="Confirm New Password"
+              className="border border-gray-300 p-3 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
             />
-            <div className="flex items-center mb-3">
-              <input
-                type="checkbox"
-                checked={isPasswordVisible}
-                onChange={() => setIsPasswordVisible(!isPasswordVisible)}
-                className="mr-2"
-              />
-              <label className="text-gray-600 dark:text-gray-300">Show Passwords</label>
-            </div>
             <div className="flex justify-end mt-4">
-              <button onClick={handlePasswordUpdate} className="bg-green-600 text-white p-2 rounded mr-2 hover:bg-green-700 transition duration-200">
-                Save Password
+              <button onClick={handlePasswordUpdate} className="bg-blue-600 text-white p-2 rounded mr-2 hover:bg-blue-700 transition duration-200">
+                Update
               </button>
               <button onClick={closePasswordModal} className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700 transition duration-200">
                 Cancel

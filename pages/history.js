@@ -229,7 +229,7 @@ const HistoryPage = () => {
               <tbody>
                 {filteredData.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-100">
-                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2 text-center">
                       <input
                         type="checkbox"
                         checked={selectedItems.includes(item)}
@@ -244,13 +244,13 @@ const HistoryPage = () => {
                         tool={item.tool}
                       />
                     </td>
-                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2 text-center">
                       {item.version}
                     </td>
-                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2 text-center">
                       {new Date(item.timestamp).toLocaleString()}
                     </td>
-                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2 text-center">
                       {item.tool || "N/A"}
                     </td>
                   </tr>
