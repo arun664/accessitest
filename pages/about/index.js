@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCheckCircle, FaChartBar, FaCodeBranch, FaLightbulb } from "react-icons/fa"; // Adding icons for better presentation
+import { FaCheckCircle, FaChartBar, FaCodeBranch, FaLightbulb } from "react-icons/fa";
 
 const About = () => {
   return (
@@ -34,7 +34,6 @@ const About = () => {
             Key Features
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Feature 1 */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col">
               <FaCheckCircle className="text-blue-600 dark:text-blue-400 text-4xl mb-4" />
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
@@ -44,7 +43,6 @@ const About = () => {
                 Utilize tools like Axe-Core and Pa11y to perform instant accessibility checks across your website.
               </div>
             </div>
-            {/* Feature 2 */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col">
               <FaChartBar className="text-blue-600 dark:text-blue-400 text-4xl mb-4" />
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
@@ -54,7 +52,6 @@ const About = () => {
                 View accessibility violations with actionable recommendations to enhance the user experience.
               </div>
             </div>
-            {/* Feature 3 */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col">
               <FaCodeBranch className="text-blue-600 dark:text-blue-400 text-4xl mb-4" />
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
@@ -64,7 +61,6 @@ const About = () => {
                 Choose different testing parameters and tools to perform deep analysis tailored to your needs.
               </div>
             </div>
-            {/* Feature 4 */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col">
               <FaLightbulb className="text-blue-600 dark:text-blue-400 text-4xl mb-4" />
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
@@ -140,6 +136,24 @@ const About = () => {
               Provides suggestions and code fixes to improve accessibility.
             </li>
           </ul>
+        </div>
+
+        {/* GitHub Repository Link */}
+        <div className="mt-12">
+          <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            GitHub Repository
+          </h3>
+          <p className="mt-4 text-lg leading-7 text-gray-600 dark:text-gray-400">
+            Explore our code and contribute to the project on GitHub:{" "}
+            <a
+              href="https://github.com/arun664/accessitest"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 dark:text-blue-400 font-semibold"
+            >
+              AccessiTest
+            </a>
+          </p>
         </div>
       </div>
     </div>
