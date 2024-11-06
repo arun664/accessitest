@@ -1,98 +1,80 @@
-import React from 'react';
-import * as XLSX from 'xlsx';
-import { toast } from 'react-toastify';
+import React from "react";
+import { toast } from "react-toastify";
+import * as XLSX from "xlsx"; // Ensure you have 'xlsx' installed
 
 const ExcelExport = ({ selectedItems }) => {
-  const exportToExcel = () => {
-    if (selectedItems.length === 0) {
+  const sanitize = (input) => {
+    // We will keep the source code intact by skipping sanitization
+    if (typeof input !== "string") return input; // Only sanitize strings
+    return input; // Don't sanitize HTML symbols, leave them intact
+  };
+
+  const exportToExcel = async () => {
+    if (!selectedItems || selectedItems.length === 0) {
       toast.info("Please select at least one item to export.");
       return;
     }
 
-    const formatNodes = (nodes) => {
-      return nodes.map(node => ({
-        'HTML Element': node.html,
-        'Failure Summary': node.failureSummary || '',
-        'Impact': node.impact || 'None',
-        'Target': node.target.join(', '),
-        'Message': node.any.length > 0 ? node.any[0].message : 'No issues',
-        'Details': node.any.length > 0 ? JSON.stringify(node.any[0].data || {}) : 'N/A',
-      }));
-    };
+    const dataForExcel = [];
+    selectedItems.forEach((item) => {
+      // Define common data structure for each violation
+      const commonData = {
+        Tool: sanitize(item.tool),
+        URL: sanitize(item.url),
+        Timestamp: sanitize(item.timestamp),
+        Version: sanitize(item.version),
+      };
 
-    const createWorksheet = (title, data) => {
-      const formattedData = data.flatMap(issue =>
-        formatNodes(issue.nodes).map(node => ({
-          'Issue ID': issue.id,
-          'Help': issue.help,
-          'Description': issue.description,
-          'Impact': issue.impact,
-          'Help URL': issue.helpUrl,
-          ...node,
-        }))
-      );
-      return XLSX.utils.json_to_sheet(formattedData, { header: Object.keys(formattedData[0] || {}) });
-    };
+      // Handle axe-core results
+      if (item.tool === "axe-core") {
+        const violations = item.result.violations;
+        violations.forEach((violation) => {
+          // Extract nodes for impacted code and target (axe-core)
+          const impactedCode = violation.nodes
+            ? violation.nodes
+                .map((node) => node.html) // Join targets inside nodes[]
+                .join(" | ") // Join targets from all nodes
+            : "";
+            // Extract nodes for impacted code and target (axe-core)
+            const target = violation.nodes
+              ? violation.nodes
+                  .map((node) => node.target.join(", ")) // Join targets inside nodes[]
+                  .join(" | ") // Join targets from all nodes
+              : "";
 
-    const workbook = XLSX.utils.book_new();
+          const violationData = {
+            ...commonData, // Copy the common fields for each violation
+            ViolationDescription: sanitize(violation.description),
+            Severity: sanitize(violation.impact), // Severity based on axe-core
+            ImpactedCode: sanitize(impactedCode), // Get impacted code from nodes
+            Target: sanitize(target),
+          };
 
-    // Create an index array to keep track of URLs and corresponding sheet names
-    const indexData = [];
-
-    // First, collect data for the index sheet
-    selectedItems.forEach((item, index) => {
-      const sheetIndex = index + 1; // To generate unique index
-
-      if (item.incomplete) {
-        const sheetName = `Result ${sheetIndex} - Incomplete`;
-        indexData.push({ url: item.url, sheetName });
+          dataForExcel.push(violationData); // Add the row for this violation
+        });
       }
 
-      if (item.passes) {
-        const sheetName = `Result ${sheetIndex} - Passes`;
-        indexData.push({ url: item.url, sheetName });
-      }
-
-      if (item.violations) {
-        const sheetName = `Result ${sheetIndex} - Violations`;
-        indexData.push({ url: item.url, sheetName });
-      }
-    });
-
-    // Create the index sheet
-    const indexSheetData = indexData.map(item => ({
-      'URL': item.url,
-      'Sheet Name': item.sheetName,
-    }));
-
-    const indexSheet = XLSX.utils.json_to_sheet(indexSheetData);
-    XLSX.utils.book_append_sheet(workbook, indexSheet, 'Index');
-
-    // Then, append the other sheets to the workbook
-    selectedItems.forEach((item, index) => {
-      const sheetIndex = index + 1; // To generate unique index
-
-      if (item.incomplete) {
-        const incompleteSheet = createWorksheet('Incomplete Issues', item.incomplete);
-        const sheetName = `Result ${sheetIndex} - Incomplete`;
-        XLSX.utils.book_append_sheet(workbook, incompleteSheet, sheetName);
-      }
-
-      if (item.passes) {
-        const passesSheet = createWorksheet('Passed Checks', item.passes);
-        const sheetName = `Result ${sheetIndex} - Passes`;
-        XLSX.utils.book_append_sheet(workbook, passesSheet, sheetName);
-      }
-
-      if (item.violations) {
-        const violationsSheet = createWorksheet('Violations', item.violations);
-        const sheetName = `Result ${sheetIndex} - Violations`;
-        XLSX.utils.book_append_sheet(workbook, violationsSheet, sheetName);
+      // Handle Pa11y results
+      if (item.tool === "pa11y") {
+        const issues = item.result.issues;
+        issues.forEach((issue) => {
+          const issueData = {
+            ...commonData, // Copy the common fields for each issue
+            ViolationDescription: sanitize(issue.message),
+            Severity: sanitize(issue.type), // Severity based on pa11y
+            ImpactedCode: sanitize(issue.context),
+            Target: sanitize(issue.selector), // Pa11y selector as target
+          };
+          dataForExcel.push(issueData); // Add the row for this issue
+        });
       }
     });
 
-    // Write the workbook to an Excel file
-    XLSX.writeFile(workbook, 'history_data.xlsx');
+    // Export data to Excel
+    const ws = XLSX.utils.json_to_sheet(dataForExcel); // Convert the data to a worksheet
+    const wb = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Accessibility Report"); // Append the sheet
+    XLSX.writeFile(wb, "accessibility_report.xlsx"); // Write the file to Excel
   };
 
   return (
