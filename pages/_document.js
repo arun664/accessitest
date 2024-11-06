@@ -11,7 +11,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body className="bg-gray-100">
+      <body className="bg-gray-100 w-full">
         {/* The Main component renders the page's content */}
         <Main />
         {/* NextScript injects Next.js scripts */}
