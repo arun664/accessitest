@@ -168,7 +168,7 @@ const MistralAISuggestions = ({ results }) => {
       </h1>
       <button
         onClick={openModal}
-        className="mb-6 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+        className="mb-6 p-2 bg-blue-500 text-white text-center rounded-md hover:bg-blue-600 focus:outline-none flex justify-center items-center mx-auto"
       >
         Send Results to Email
       </button>
@@ -290,7 +290,7 @@ const MistralAISuggestions = ({ results }) => {
                   <button
                     className={`px-4 py-2 ${
                       sending ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-                    } text-white rounded-md focus:outline-none`}
+                    } text-white center rounded-md focus:outline-none`}
                     onClick={handleEmailSend}
                     disabled={sending}
                   >

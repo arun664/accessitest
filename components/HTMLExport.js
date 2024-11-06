@@ -277,8 +277,8 @@ const HTMLExport = ({ selectedItems }) => {
 
   return (
     <div>
-      <p className="mb-4 font-bold">
-        Please select only one item to download HTML report:
+      <p className="mb-2">
+        Please select only <strong><i>ONE ITEM</i></strong> to download HTML report:
       </p>
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded"

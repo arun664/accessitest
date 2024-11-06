@@ -120,16 +120,19 @@ const HistoryPage = () => {
   }
 
   return (
-    <div className="p-4 flex h-screen">
+    <div className="p-4 min-h-screen flex px-4 sm:px-6 lg:px-8 pb-4">
       <div className="flex-1 mr-4 flex flex-col">
         <div className="mb-4 flex flex-row space-x-4">
-          <div className="w-2/4 flex flex-col space-y-2">
+          <div className="w-2/4 flex flex-col space-y-2 mb-6">
             <h1 className="text-2xl font-bold mb-4">Accessibility History</h1>
             <div className="mb-4">
+              <p className="mb-2">
+                Please select one or more to download below reports:
+              </p>
               <ExcelExport selectedItems={selectedItems} />
               <JSONExport selectedItems={selectedItems} />
             </div>
-            <div className="mb-4">
+            <div className="mb-4 pt-4 pb-4">
               <HTMLExport selectedItems={selectedItems} />
             </div>
 
@@ -138,28 +141,28 @@ const HistoryPage = () => {
               placeholder="Filter by URL"
               value={urlFilter}
               onChange={(e) => setUrlFilter(e.target.value)}
-              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
+              className="border p-2 dark:bg-gray-900 dark:text-white"
             />
             <input
               type="text"
               placeholder="Filter by Version"
               value={versionFilter}
               onChange={(e) => setVersionFilter(e.target.value)}
-              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
+              className="border p-2 dark:bg-gray-900 dark:text-white"
             />
             <input
               type="date"
               placeholder="Filter by Timestamp"
               value={timestampFilter}
               onChange={(e) => setTimestampFilter(e.target.value)}
-              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
+              className="border p-2 dark:bg-gray-900 dark:text-white"
             />
             <input
               type="text"
               placeholder="Filter by Tool"
               value={toolFilter}
               onChange={(e) => setToolFilter(e.target.value)}
-              className="border p-2"
+              className="border dark:bg-gray-900 p-2"
             />
             <div className="flex space-x-2 mt-2">
               <button
@@ -183,7 +186,9 @@ const HistoryPage = () => {
                 Chart Display For Selected Items
               </h1>
               {selectedItems.length > 0 ? (
-                <ChartDisplay selectedItems={selectedItems.map((item) => item.result)} />
+                <ChartDisplay
+                  selectedItems={selectedItems.map((item) => item.result)}
+                />
               ) : (
                 <div className="text-center">No items selected.</div>
               )}
@@ -198,7 +203,7 @@ const HistoryPage = () => {
             <table className="min-w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="border border-gray-300 p-2">
+                  <th className="border border-gray-300 dark:bg-gray-900 p-2">
                     <input
                       type="checkbox"
                       checked={isAllSelected}
@@ -207,16 +212,24 @@ const HistoryPage = () => {
                     />
                     Select All
                   </th>
-                  <th className="border border-gray-300 p-2">URL</th>
-                  <th className="border border-gray-300 p-2">Version</th>
-                  <th className="border border-gray-300 p-2">Timestamp</th>
-                  <th className="border border-gray-300 p-2">Tool</th>
+                  <th className="border border-gray-300 dark:bg-gray-900 p-2">
+                    URL
+                  </th>
+                  <th className="border border-gray-300 dark:bg-gray-900 p-2">
+                    Version
+                  </th>
+                  <th className="border border-gray-300 dark:bg-gray-900 p-2">
+                    Timestamp
+                  </th>
+                  <th className="border border-gray-300 dark:bg-gray-900 p-2">
+                    Tool
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-100">
-                    <td className="border border-gray-300 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
                       <input
                         type="checkbox"
                         checked={selectedItems.includes(item)}
@@ -224,16 +237,20 @@ const HistoryPage = () => {
                         className="mr-2"
                       />
                     </td>
-                    <td className="border border-gray-300 p-2">
-                      <Accordion title={item.url} details={item} tool={item.tool}/>
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
+                      <Accordion
+                        title={item.url}
+                        details={item}
+                        tool={item.tool}
+                      />
                     </td>
-                    <td className="border border-gray-300 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
                       {item.version}
                     </td>
-                    <td className="border border-gray-300 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
                       {new Date(item.timestamp).toLocaleString()}
                     </td>
-                    <td className="border border-gray-300 p-2">
+                    <td className="border border-gray-300 dark:bg-gray-900 p-2">
                       {item.tool || "N/A"}
                     </td>
                   </tr>

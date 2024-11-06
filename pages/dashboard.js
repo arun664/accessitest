@@ -58,17 +58,12 @@ const Dashboard = () => {
     setLoading(true);
   
     try {
-      // Iterate over each tool and its result in `currentResults` (only selected tools)
       for (const [tool, result] of Object.entries(currentResults)) {
         if (!result) {
           console.warn(`No result found for tool: ${tool}`);
-          continue; // Skip if result is empty or undefined
+          continue; 
         }
-  
-        //console.log("Saving results for tool:", tool);
-        //console.log("Results:", result);
-        //console.log("URL:", url);
-  
+
         const requestData = {
           url,
           tool,
@@ -165,6 +160,7 @@ const Dashboard = () => {
         <p>Note: Mistral AI provides suggestions for Axe-Core results only.</p>
         <button
           onClick={async () => {
+            localStorage.removeItem("mistralAdvice");
             router.push("/mistral-ai-results");
           }}
           className="mt-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700"

@@ -44,18 +44,18 @@ const CustomMultiSelect = ({ options, selectedOptions, setSelectedOptions }) => 
         <span className="text-gray-500">{isOpen ? '▲' : '▼'}</span>
       </div>
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border rounded mt-1 max-h-60 overflow-auto shadow-lg">
+        <div className="absolute z-10 w-full bg-white border rounded mt-1 max-h-60 overflow-auto shadow-lg dark:bg-gray-900">
           <input
             type="text"
             placeholder="Search..."
-            className="p-2 border-b w-full text-black dark:bg-gray-900 dark:text-white"
+            className="p-2 border-b w-full text-black dark:bg-gray-900"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {filteredOptions.map((option) => (
             <div
               key={option.value}
               className={`p-2 cursor-pointer ${
-                selectedOptions.includes(option.value) ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+                selectedOptions.includes(option.value) ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:bg-blue-950 '
               }`}
               onClick={() => handleOptionClick(option.value)}
             >

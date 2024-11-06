@@ -106,10 +106,10 @@ const ChartDisplay = ({ selectedItems }) => {
   };
 
   return (
-    <>
-      <h2>Violations Breakdown</h2>
+    <div className="bg-gray-100 dark:bg-white m-2 p-2">
+      <h2 className="dark:text-gray-900">Violations Breakdown</h2>
       <Bar data={chartData} options={options} />
-    </>
+    </div>
   );
 };
 

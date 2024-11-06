@@ -20,25 +20,25 @@ const Accordion = ({ title, details, tool }) => {
 
   const renderDetails = (items, showMore) => {
     return (
-      <table className="min-w-full border-collapse border border-gray-300 mt-2">
+      <table className="min-w-full border-collapse border border-gray-300 dark:bg-gray-900 mt-2">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 p-2">Description</th>
-            <th className="border border-gray-300 p-2">Help</th>
-            <th className="border border-gray-300 p-2">ID</th>
-            <th className="border border-gray-300 p-2">Impact</th>
-            <th className="border border-gray-300 p-2">HTML</th>
-            <th className="border border-gray-300 p-2">Target</th>
+          <tr className="bg-gray-200 dark:bg-gray-900 ">
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">Description</th>
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">Help</th>
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">ID</th>
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">Impact</th>
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">HTML</th>
+            <th className="border border-gray-300 dark:bg-gray-900 p-2">Target</th>
           </tr>
         </thead>
         <tbody>
           {(showMore ? items : items.slice(0, MAX_LENGTH)).map(
             (item, index) => (
               <tr key={index + item.tool}>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   {item.description || item.message || "N/A"}
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   {item?.help ? (
                     <a
                       href={item.help}
@@ -52,13 +52,13 @@ const Accordion = ({ title, details, tool }) => {
                     <span>N/A</span>
                   )}
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   {item.id || item.code || "N/A"}
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   {item.impact || item?.type || "N/A"}
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   <pre className="whitespace-pre-wrap">
                     {item.nodes
                       ? Array.isArray(item.nodes)
@@ -69,7 +69,7 @@ const Accordion = ({ title, details, tool }) => {
                       : item.html || item.context || "N/A"}
                   </pre>
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className="border border-gray-300 dark:bg-gray-900 p-2">
                   {item?.selector
                     ? item.selector
                     : Array.isArray(item.nodes)
@@ -89,8 +89,8 @@ const Accordion = ({ title, details, tool }) => {
   return (
     <div className="border border-gray-300 rounded mb-2">
       <div
-        className={`flex justify-between items-center p-4 cursor-pointer transition ${
-          isOpen ? "bg-blue-100" : "bg-gray-200"
+        className={`flex justify-between items-center p-4 cursor-pointer transition  ${
+          isOpen ? "bg-blue-100 dark:bg-blue-900" : "bg-gray-200 dark:bg-gray-700"
         } hover:bg-gray-300`}
         onClick={toggleAccordion}
       >
