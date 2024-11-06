@@ -7,7 +7,7 @@ const Account = () => {
   const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  const [isDeleteHistoryModalOpen, setIsDeleteHistoryModalOpen] = useState(false); // New state for delete history modal
+  const [isDeleteHistoryModalOpen, setIsDeleteHistoryModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -36,7 +36,7 @@ const Account = () => {
     setConfirmNewPassword('');
   };
 
-  const openDeleteHistoryModal = () => setIsDeleteHistoryModalOpen(true); // Open delete history modal
+  const openDeleteHistoryModal = () => setIsDeleteHistoryModalOpen(true);
   const closeDeleteHistoryModal = () => {
     setIsDeleteHistoryModalOpen(false);
     setCurrentPassword('');
@@ -58,7 +58,7 @@ const Account = () => {
 
       if (response.ok && result.isValid) {
         closeModal();
-        handleSave();
+        handleSave();  // Only for email update
       } else {
         toast.error('Incorrect password. Please try again.');
       }
@@ -83,14 +83,14 @@ const Account = () => {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success('User details updated successfully!');
+        toast.success('Email updated successfully!');
         localStorage.setItem('email', email);
       } else {
-        toast.error(result.error || 'Failed to update user details.');
+        toast.error(result.error || 'Failed to update email.');
       }
     } catch (err) {
-      console.error('Error updating user details:', err);
-      toast.error('Error updating user details. Please try again.');
+      console.error('Error updating email:', err);
+      toast.error('Error updating email. Please try again.');
     }
   };
 
@@ -103,12 +103,12 @@ const Account = () => {
     }
 
     try {
-      const response = await fetch(`/api/user/updatePassword`, {
+      const response = await fetch(`/api/user/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: userId, currentPassword, newPassword }),
+        body: JSON.stringify({ newPassword: newPassword }),
       });
 
       const result = await response.json();
@@ -126,7 +126,7 @@ const Account = () => {
   };
 
   const handleDeleteHistory = async () => {
-    const token = localStorage.getItem('token'); // Get the JWT token from localStorage
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch('/api/history', {
@@ -139,7 +139,7 @@ const Account = () => {
 
       if (response.ok) {
         toast.success('History deleted successfully!');
-        closeDeleteHistoryModal(); // Close modal after successful deletion
+        closeDeleteHistoryModal();
       } else {
         const result = await response.json();
         toast.error(result.error || 'Failed to delete history.');
@@ -186,7 +186,7 @@ const Account = () => {
         Update Password
       </button>
       <button
-        onClick={openDeleteHistoryModal} // Open delete history modal
+        onClick={openDeleteHistoryModal}
         className="bg-red-600 text-white p-3 rounded w-full mt-4 hover:bg-red-700 transition duration-200"
       >
         Delete History

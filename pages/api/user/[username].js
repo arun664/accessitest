@@ -7,15 +7,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Reference to the user's document
     const userDocRef = doc(db, 'users', req.body.username);
-    console.log(req.body)
-    const password = req.body.newPassword;
+    const { newPassword, email } = req.body;
 
-    // Update the document with new email
-    await updateDoc(userDocRef, { password: password });
-
-    return res.status(200).json({ message: 'User details updated successfully' });
+    if (newPassword) {
+      // Update the document with new password
+      await updateDoc(userDocRef, { password: newPassword });
+      return res.status(200).json({ message: 'Password updated successfully' });
+    } else if (email) {
+      // Update the document with new email
+      await updateDoc(userDocRef, { email: email });
+      return res.status(200).json({ message: 'Email updated successfully' });
+    } else {
+      return res.status(400).json({ error: 'Invalid request data' });
+    }
   } catch (error) {
     console.error('Error updating user details:', error);
     return res.status(500).json({ error: 'Failed to update user details' });
