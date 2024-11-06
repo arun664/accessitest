@@ -1,5 +1,5 @@
 import { db } from '@/config/firebaseConfig';
-import { doc, updateDoc } from 'firebase/firestore/lite';
+import { doc, updateDoc, collection, getDocs, query, where } from 'firebase/firestore/lite';
 
 export default async function handler(req, res) {
   if (req.method !== 'PUT') {
@@ -15,6 +15,15 @@ export default async function handler(req, res) {
       await updateDoc(userDocRef, { password: newPassword });
       return res.status(200).json({ message: 'Password updated successfully' });
     } else if (email) {
+      // Check if the email already exists in any other user document
+      const usersCollection = collection(db, 'users');
+      const emailQuery = query(usersCollection, where('email', '==', email));
+      const querySnapshot = await getDocs(emailQuery);
+
+      if (!querySnapshot.empty) {
+        return res.status(400).json({ error: 'Email already exists' });
+      }
+
       // Update the document with new email
       await updateDoc(userDocRef, { email: email });
       return res.status(200).json({ message: 'Email updated successfully' });
