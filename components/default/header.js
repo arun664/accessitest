@@ -90,6 +90,7 @@ const Header = () => {
                           <Link
                             href="/user/account"
                             className="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white"
+                            onClick={() => setDropdownOpen(false)} // Close dropdown on click
                           >
                             Profile
                           </Link>
@@ -98,7 +99,7 @@ const Header = () => {
                           <button
                             onClick={() => {
                               logout();
-                              setDropdownOpen(false);
+                              setDropdownOpen(false); // Close dropdown on logout
                             }}
                             className="block w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white"
                           >
