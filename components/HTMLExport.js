@@ -160,10 +160,12 @@ const HTMLExport = ({ selectedItems }) => {
 
     const renderTable = (title, data, isViolation = false) => {
       if (!data || data.length === 0) return "";
-    
+
       return `
         <div class="accordion-item">
-          <div class="accordion-header" onclick="toggleAccordion('${sanitize(title)}')">
+          <div class="accordion-header" onclick="toggleAccordion('${sanitize(
+            title
+          )}')">
             ${sanitize(title)}
             <span class="toggle-icon">+</span>
           </div>
@@ -190,35 +192,49 @@ const HTMLExport = ({ selectedItems }) => {
               ${data
                 .map((issue) =>
                   // If issue.nodes doesn't exist, consider the issue itself
-                  (issue.nodes && issue.nodes.length > 0 ? issue.nodes : [issue]).map((node) => `
+                  (issue.nodes && issue.nodes.length > 0
+                    ? issue.nodes
+                    : [issue]
+                  ).map(
+                    (node) => `
                     <tr>
-                      <td>${sanitize(node.html?.toString() || node.context || "N/A")}</td>
+                      <td>${sanitize(
+                        node.html?.toString() || node.context || "N/A"
+                      )}</td>
                       ${
                         isViolation
                           ? `
-                        <td>${sanitize(node.failureSummary?.toString() || "N/A")}</td>
+                        <td>${sanitize(
+                          node.failureSummary?.toString() || "N/A"
+                        )}</td>
                         <td>${sanitize(node.impact || "None")}</td>
                         `
                           : `
-                        <td>${sanitize(node.impact ? node.impact : node.type || "None")}</td>
+                        <td>${sanitize(
+                          node.impact ? node.impact : node.type || "None"
+                        )}</td>
                         `
                       }
-                      <td>${sanitize(node.target ? node.target.join(", ") : node.selector || "N/A")}</td>
+                      <td>${sanitize(
+                        node.target
+                          ? node.target.join(", ")
+                          : node.selector || "N/A"
+                      )}</td>
                       <td>${
                         node.any && node.any.length > 0
                           ? sanitize(node.any[0].message)
                           : node.message || "No issues"
                       }</td>
                     </tr>
-                  `)
-                ).join("")}
+                  `
+                  )
+                )
+                .join("")}
             </table>
           </div>
         </div>
       `;
     };
-    
-    
 
     // Render all data tables for the selected item
     htmlContent += renderTable(
@@ -233,7 +249,11 @@ const HTMLExport = ({ selectedItems }) => {
       false
     );
 
-    htmlContent += renderTable("Passed Checks", item.result.passes || [], false);
+    htmlContent += renderTable(
+      "Passed Checks",
+      item.result.passes || [],
+      false
+    );
 
     htmlContent += `
           <script>
@@ -257,7 +277,15 @@ const HTMLExport = ({ selectedItems }) => {
 
   return (
     <div>
-      <button onClick={exportToHTML}>Export to HTML</button>
+      <p className="mb-4 font-bold">
+        Please select only one item to download HTML report:
+      </p>
+      <button
+        className="bg-blue-500 text-white py-2 px-4 rounded"
+        onClick={exportToHTML}
+      >
+        Export to HTML
+      </button>
     </div>
   );
 };
