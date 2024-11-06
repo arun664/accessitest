@@ -134,21 +134,21 @@ const HistoryPage = () => {
               placeholder="Filter by URL"
               value={urlFilter}
               onChange={(e) => setUrlFilter(e.target.value)}
-              className="border p-2"
+              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
             />
             <input
               type="text"
               placeholder="Filter by Version"
               value={versionFilter}
               onChange={(e) => setVersionFilter(e.target.value)}
-              className="border p-2"
+              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
             />
             <input
               type="date"
               placeholder="Filter by Timestamp"
               value={timestampFilter}
               onChange={(e) => setTimestampFilter(e.target.value)}
-              className="border p-2"
+              className="border p-2 text-black dark:bg-gray-900 dark:text-white"
             />
             <div className="flex space-x-2 mt-2">
               <button

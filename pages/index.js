@@ -87,10 +87,11 @@ export default function Home() {
             placeholder="Enter URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="px-4 py-2 border rounded mb-4 w-80"
+            className="px-4 py-2 border rounded mb-4 w-80 text-black dark:bg-gray-900 dark:text-white"
             required
           />
           <CustomMultiSelect
+          className="text-black dark:bg-gray-900 dark:text-white"
             options={tools}
             selectedOptions={selectedTools}
             setSelectedOptions={setSelectedTools}

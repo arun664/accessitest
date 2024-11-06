@@ -48,7 +48,7 @@ const CustomMultiSelect = ({ options, selectedOptions, setSelectedOptions }) => 
           <input
             type="text"
             placeholder="Search..."
-            className="p-2 border-b w-full"
+            className="p-2 border-b w-full text-black dark:bg-gray-900 dark:text-white"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {filteredOptions.map((option) => (
