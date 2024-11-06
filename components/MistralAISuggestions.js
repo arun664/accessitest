@@ -172,6 +172,9 @@ const MistralAISuggestions = ({ results }) => {
       >
         Send Results to Email
       </button>
+      
+      <span className="text-center items-center mx-auto justify-center flex">Note: Mistral AI Suggestions is configured to provide suggestions only for axe-core tool as on 11/6/24</span>
+
       {loading ? (
         <p className="text-center pt-10">Loading Mistral AI advice...</p>
       ) : (
