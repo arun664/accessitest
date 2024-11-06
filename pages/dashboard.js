@@ -117,7 +117,7 @@ const Dashboard = () => {
       </div>
 
       {Object.keys(currentResults).length > 0 ? (
-        <div className="bg-white p-4 rounded shadow-md">
+        <div className="bg-white p-4 rounded shadow-md dark:bg-black">
           {Object.entries(currentResults).map(([tool, result]) => (
             <div key={tool} className="mb-4">
               <h2 className="text-xl font-bold">
