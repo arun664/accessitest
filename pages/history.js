@@ -215,7 +215,7 @@ const HistoryPage = () => {
               </thead>
               <tbody>
                 {filteredData.map((item) => (
-                  <tr key={item.userId} className="hover:bg-gray-100">
+                  <tr key={item.id} className="hover:bg-gray-100">
                     <td className="border border-gray-300 p-2">
                       <input
                         type="checkbox"

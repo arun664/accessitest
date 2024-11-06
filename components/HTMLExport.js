@@ -82,9 +82,22 @@ const HTMLExport = ({ selectedItems }) => {
   const getDataCounts = () => {
     const counts = { violations: 0, incomplete: 0, passes: 0 };
     selectedItems.forEach((item) => {
-      counts.violations += item.violations ? item.violations.length : 0;
-      counts.incomplete += item.incomplete ? item.incomplete.length : 0;
-      counts.passes += item.passes ? item.passes.length : 0;
+      // Adjust for pa11y or axe-core based on tool type
+      if (item.tool === "axe-core") {
+        counts.violations += item.result.violations
+          ? item.result.violations.length
+          : 0;
+        counts.incomplete += item.result.incomplete
+          ? item.result.incomplete.length
+          : 0;
+        counts.passes += item.result.passes ? item.result.passes.length : 0;
+      } else if (item.tool === "pa11y") {
+        counts.violations += item.result.issues ? item.result.issues.length : 0;
+        counts.incomplete += item.result.incomplete
+          ? item.result.incomplete.length
+          : 0;
+        counts.passes += item.result.passes ? item.result.passes.length : 0;
+      }
     });
     return counts;
   };
@@ -125,112 +138,112 @@ const HTMLExport = ({ selectedItems }) => {
             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
             th { background-color: #f2f2f2; }
             .toggle-icon { margin-left: auto; }
-            img {
-              display: block; /* Ensure no inline spacing issues */
-              margin: 0; /* Removes any default margins */
-              padding: 0; /* Removes any default padding */
-            }
+            img { display: block; margin: 0; padding: 0; }
           </style>
         </head>
         <body>
-        <h1>Accessibility History Report</h1>
-        <div style="display: flex; justify-content: center;">
-          <img src="${chartImage}" alt="Issue Counts Chart" style="width: 400px; height: 400px; margin: 0; padding: 0;">
-        </div>
+          <h1>Accessibility History Report - ${sanitize(
+            selectedItems[0].tool
+          )}</h1>
+          <div style="display: flex; justify-content: center;">
+            <img src="${chartImage}" alt="Issue Counts Chart" style="width: 400px; height: 400px; margin: 0; padding: 0;">
+          </div>
     `;
 
     const item = selectedItems[0];
-    htmlContent += `<h2>URL: <a href="${sanitize(item.url)}" target="_blank">${sanitize(item.url)}</a></h2>`;
+    htmlContent += `<h2>URL: <a href="${sanitize(
+      item.url
+    )}" target="_blank">${sanitize(item.url)}</a></h2>`;
 
-    // Ensure that the accordion functionality works properly in the exported HTML
+    htmlContent += `<p>Report Version: ${sanitize(item.version)}</p>`;
+    htmlContent += `<p>Report Timestamp: ${sanitize(item.timestamp)}</p>`;
+
     const renderTable = (title, data, isViolation = false) => {
       if (!data || data.length === 0) return "";
+    
       return `
-      <div class="accordion-item">
-        <div class="accordion-header" onclick="toggleAccordion('${sanitize(title)}')">
-          ${sanitize(title)}
-          <span class="toggle-icon">+</span>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion('${sanitize(title)}')">
+            ${sanitize(title)}
+            <span class="toggle-icon">+</span>
+          </div>
+          <div class="accordion-body" id="body-${sanitize(title)}">
+            <table>
+              <tr>
+                ${
+                  isViolation
+                    ? `
+                  <th>HTML Element</th>
+                  <th>Failure Summary</th>
+                  <th>Impact</th>
+                  <th>Target</th>
+                  <th>Message</th>
+                  `
+                    : `
+                  <th>HTML Element</th>
+                  <th>Impact</th>
+                  <th>Target</th>
+                  <th>Message</th>
+                  `
+                }
+              </tr>
+              ${data
+                .map((issue) =>
+                  // If issue.nodes doesn't exist, consider the issue itself
+                  (issue.nodes && issue.nodes.length > 0 ? issue.nodes : [issue]).map((node) => `
+                    <tr>
+                      <td>${sanitize(node.html?.toString() || node.context || "N/A")}</td>
+                      ${
+                        isViolation
+                          ? `
+                        <td>${sanitize(node.failureSummary?.toString() || "N/A")}</td>
+                        <td>${sanitize(node.impact || "None")}</td>
+                        `
+                          : `
+                        <td>${sanitize(node.impact ? node.impact : node.type || "None")}</td>
+                        `
+                      }
+                      <td>${sanitize(node.target ? node.target.join(", ") : node.selector || "N/A")}</td>
+                      <td>${
+                        node.any && node.any.length > 0
+                          ? sanitize(node.any[0].message)
+                          : node.message || "No issues"
+                      }</td>
+                    </tr>
+                  `)
+                ).join("")}
+            </table>
+          </div>
         </div>
-        <div class="accordion-body" id="body-${sanitize(title)}">
-          <table>
-            <tr>
-              ${
-                isViolation
-                  ? `
-              <th>HTML Element</th>
-              <th>Failure Summary</th>
-              <th>Impact</th>
-              <th>Target</th>
-              <th>Message</th>
-              <th>Details</th>
-            `
-                  : `
-              <th>HTML Element</th>
-              <th>Impact</th>
-              <th>Target</th>
-              <th>Message</th>
-              <th>Details</th>
-            `
-              }
-            </tr>
-            ${data
-              .map((issue) =>
-                issue.nodes
-                  .map(
-                    (node) => `
-                <tr>
-                  <td>${sanitize(node.html.toString() || "N/A")}</td>
-                  ${
-                    isViolation
-                      ? `
-                  <td>${sanitize(node.failureSummary.toString() || "N/A")}</td>
-                  <td>${sanitize(node.impact || "None")}</td>
-                `
-                      : `
-                  <td>${sanitize(node.impact || "None")}</td>
-                `
-                  }
-                  <td>${sanitize(node.target ? node.target.join(", ") : "N/A")}</td>
-                  <td>${
-                    node.any && node.any.length > 0
-                      ? sanitize(node.any[0].message)
-                      : "No issues"
-                  }</td>
-                  <td>${
-                    node.any && node.any.length > 0
-                      ? sanitize(JSON.stringify(node.any[0].data || {}))
-                      : "N/A"
-                  }</td>
-                </tr>
-              `
-                  )
-                  .join("")
-              )
-              .join("")}
-          </table>
-        </div>
-      </div>
-    `;
+      `;
     };
+    
+    
 
-    // Render all data tables
-    htmlContent += renderTable("Violations", item.violations || [], true);
+    // Render all data tables for the selected item
+    htmlContent += renderTable(
+      item.tool === "axe-core" ? "Violations" : "Issues",
+      item.result.violations || item.result.issues || [],
+      item.tool === "axe-core"
+    );
+
     htmlContent += renderTable(
       "Incomplete Issues",
-      item.incomplete || [],
+      item.result.incomplete || [],
       false
     );
-    htmlContent += renderTable("Passed Checks", item.passes || [], false);
+
+    htmlContent += renderTable("Passed Checks", item.result.passes || [], false);
 
     htmlContent += `
-        <script>
-          function toggleAccordion(title) {
-            const body = document.getElementById('body-' + title);
-            body.classList.toggle('show');
-            const icon = body.previousElementSibling.querySelector('.toggle-icon');
-            icon.textContent = body.classList.contains('show') ? '-' : '+';
-          }
-        </script>
+          <script>
+            function toggleAccordion(title) {
+              const body = document.getElementById('body-' + title);
+              const icon = body.previousElementSibling.querySelector('.toggle-icon');
+              body.classList.toggle('show');
+              icon.textContent = body.classList.contains('show') ? '-' : '+';
+            }
+          </script>
         </body>
       </html>
     `;
@@ -238,21 +251,13 @@ const HTMLExport = ({ selectedItems }) => {
     const blob = new Blob([htmlContent], { type: "text/html" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "accessibility_history_report.html";
+    link.download = "accessibility_report.html";
     link.click();
   };
 
   return (
     <div>
-      <p className="mb-4 font-bold">
-        Please select only one item to download HTML report:
-      </p>
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded"
-        onClick={exportToHTML}
-      >
-        Export to HTML
-      </button>
+      <button onClick={exportToHTML}>Export to HTML</button>
     </div>
   );
 };
