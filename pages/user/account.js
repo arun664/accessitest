@@ -77,7 +77,7 @@ const Account = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ username: userId, email: email }),
       });
 
       const result = await response.json();
@@ -108,7 +108,7 @@ const Account = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newPassword: newPassword }),
+        body: JSON.stringify({  username: userId, newPassword: newPassword }),
       });
 
       const result = await response.json();
