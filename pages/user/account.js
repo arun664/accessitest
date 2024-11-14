@@ -181,7 +181,7 @@ const Account = () => {
       </button>
       <button
         onClick={openPasswordModal}
-        className="bg-green-600 text-white p-3 rounded w-full mt-4 hover:bg-green-700 transition duration-200"
+        className="bg-green-600 text-white p-3 rounded w-full mt-4 hover:bg-green-900 transition duration-200"
       >
         Update Password
       </button>
