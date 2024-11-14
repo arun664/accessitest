@@ -16,11 +16,16 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <AuthProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </AuthProvider>
+    <>
+      <Head>
+        <title>AccessiTest</title>
+      </Head>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
+    </>
   );
 }
 
