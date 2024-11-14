@@ -11,7 +11,7 @@ const About = () => {
         <p className="mt-2 text-3xl leading-9 font-extrabold text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10">
           Modern Web Application for Accessibility Testing
         </p>
-        <p className="mt-4 max-w-2xl text-xl leading-7 text-gray-500 dark:text-gray-300">
+        <p className="mt-4 max-w-2xl text-xl leading-7 text-black dark:text-white">
           Our web application offers an advanced solution to analyze and improve
           accessibility issues across your website using a variety of online
           test tools. With real-time insights into accessibility compliance, we
@@ -20,7 +20,7 @@ const About = () => {
         </p>
 
         <div className="mt-10">
-          <p className="text-lg leading-7 text-gray-600 dark:text-gray-400">
+          <p className="text-lg leading-7  text-black dark:text-white">
             By leveraging cutting-edge testing tools, our platform simplifies
             the process of evaluating websites for accessibility errors,
             warnings, and best practices, ensuring your web content meets modern
@@ -39,7 +39,7 @@ const About = () => {
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Real-Time Accessibility Testing
               </h4>
-              <div className="text-lg text-gray-600 dark:text-gray-400 mt-4 pl-4">
+              <div className="text-lg  text-black dark:text-white mt-4 pl-4">
                 Utilize tools like Axe-Core and Pa11y to perform instant accessibility checks across your website.
               </div>
             </div>
@@ -48,7 +48,7 @@ const About = () => {
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Detailed Reports & Insights
               </h4>
-              <div className="text-lg text-gray-600 dark:text-gray-400 mt-4 pl-4">
+              <div className="text-lg  text-black dark:text-white mt-4 pl-4">
                 View accessibility violations with actionable recommendations to enhance the user experience.
               </div>
             </div>
@@ -57,7 +57,7 @@ const About = () => {
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Multi-Tool & Customizable Testing
               </h4>
-              <div className="text-lg text-gray-600 dark:text-gray-400 mt-4 pl-4">
+              <div className="text-lg  text-black dark:text-white mt-4 pl-4">
                 Choose different testing parameters and tools to perform deep analysis tailored to your needs.
               </div>
             </div>
@@ -66,7 +66,7 @@ const About = () => {
               <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 AI-Powered Suggestions & Fixes
               </h4>
-              <div className="text-lg text-gray-600 dark:text-gray-400 mt-4 pl-4">
+              <div className="text-lg  text-black dark:text-white mt-4 pl-4">
                 Receive intelligent suggestions and automated code fixes powered by Mistral AI to improve accessibility.
               </div>
             </div>
@@ -78,7 +78,7 @@ const About = () => {
           <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             Credits
           </h3>
-          <ul className="mt-4 text-lg leading-7 text-gray-600 dark:text-gray-400 list-disc pl-8">
+          <ul className="mt-4 text-lg leading-7  text-black dark:text-white list-disc pl-8">
             <li>
               <strong>
                 <a
@@ -143,7 +143,7 @@ const About = () => {
           <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             GitHub Repository
           </h3>
-          <p className="mt-4 text-lg leading-7 text-gray-600 dark:text-gray-400">
+          <p className="mt-4 text-lg leading-7  text-black dark:text-white">
             Explore our code and contribute to the project on GitHub:{" "}
             <a
               href="https://github.com/arun664/accessitest"
