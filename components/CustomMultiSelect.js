@@ -37,7 +37,7 @@ const CustomMultiSelect = ({ options, selectedOptions, setSelectedOptions }) => 
   return (
     <div className="relative w-80" ref={ref}>
       <div
-        className="border rounded p-2 cursor-pointer flex justify-between items-center"
+        className="border rounded p-2 cursor-pointer flex justify-between items-center bg-gray-200 dark:bg-gray-800"
         onClick={toggleDropdown}
       >
         <span>{selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select tools'}</span>

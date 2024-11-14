@@ -80,8 +80,10 @@ export default function Home() {
         <LoadingSpinner />
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <label htmlFor="url">Enter URL</label>
           <input
             type="url"
+            id="url"
             placeholder="Enter URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -96,7 +98,7 @@ export default function Home() {
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 mt-4"
+            className="px-6 py-2 bg-blue-300 text-white rounded hover:bg-blue-700 mt-4"
           >
             Run Accessibility Test
           </button>
