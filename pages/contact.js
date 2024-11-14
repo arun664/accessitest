@@ -55,12 +55,13 @@ export default function ContactForm() {
         className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-lg"
       >
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label htmlFor="name" className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Name
           </label>
           <input
             type="text"
             name="name"
+            id="name"
             value={formData.name}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-gray-900 dark:text-white"
@@ -69,12 +70,13 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Email
           </label>
           <input
             type="email"
             name="email"
+            id="email"
             value={formData.email}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-gray-900 dark:text-white"
@@ -83,12 +85,13 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label htmlFor="number" className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Phone Number
           </label>
           <input
             type="tel"
             name="number"
+            id="number"
             value={formData.number}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-gray-900 dark:text-white"
@@ -97,12 +100,13 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label htmlFor="subject" className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Subject
           </label>
           <input
             type="text"
             name="subject"
+            id="subject"
             value={formData.subject}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-gray-900 dark:text-white"
@@ -111,11 +115,12 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label htmlFor="text" className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Message
           </label>
           <textarea
             name="text"
+            id="text"
             value={formData.text}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-gray-900 dark:text-white"

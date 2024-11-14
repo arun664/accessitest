@@ -46,8 +46,10 @@ const ForgotPassword = () => {
         <h1 className="text-3xl font-bold text-center mb-6 text-blue-600 dark:text-blue-400">Reset Password</h1>
         <form onSubmit={handleResetRequest}>
           <div className="mb-4">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
+              id="email"
               value={email}
               onChange={handleEmailChange}
               placeholder="Enter your email"
