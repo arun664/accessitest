@@ -1,11 +1,15 @@
 import Layout from "@/components/default/layout";
 import "@/styles/globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   if (Component.noLayout) {
     return (
       <>
+        <Head>
+          <title>AccessiTest</title>
+        </Head>
         <Component {...pageProps} />
       </>
     );
