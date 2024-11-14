@@ -40,7 +40,7 @@ const CustomMultiSelect = ({ options, selectedOptions, setSelectedOptions }) => 
         className="border rounded p-2 cursor-pointer flex justify-between items-center bg-gray-200 dark:bg-gray-800"
         onClick={toggleDropdown}
       >
-        <span>{selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select tools'}</span>
+        <span className="text-black">{selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select tools'}</span>
         <span className="text-gray-500">{isOpen ? '▲' : '▼'}</span>
       </div>
       {isOpen && (

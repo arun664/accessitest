@@ -98,7 +98,7 @@ export default function Home() {
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-300 text-white rounded hover:bg-blue-700 mt-4"
+            className="px-6 py-2 bg-blue-300 text-black dark:bg-blue-500 dark:hover:bg-blue-300 rounded hover:bg-blue-700 hover:text-white mt-4"
           >
             Run Accessibility Test
           </button>
