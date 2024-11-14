@@ -73,7 +73,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="relative">
-                  <button onClick={toggleDropdown} className="flex items-center">
+                  <button onClick={toggleDropdown} className="flex items-center" aria-label="Profile Button" title="Profile">
                     <img
                       src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
                       alt="Profile"
