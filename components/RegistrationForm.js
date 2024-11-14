@@ -51,6 +51,7 @@ const RegistrationForm = () => {
       <input
         type="text"
         placeholder="Username"
+        id="username"
         value={username}
         onChange={(e) => setUserName(e.target.value)}
         className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
@@ -59,6 +60,7 @@ const RegistrationForm = () => {
       <input
         type="email"
         placeholder="Email"
+        id="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
@@ -67,6 +69,7 @@ const RegistrationForm = () => {
       <input
         type="password"
         placeholder="Password"
+        id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="border border-gray-300 p-3 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
