@@ -117,6 +117,8 @@ const Header = () => {
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full bg-gray-200 dark:bg-gray-600 text-black dark:text-white"
+            aria-label="Toggle Dark or Light Mode"
+            title="Toggle Dark or Light Mode"
           >
             {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
           </button>
