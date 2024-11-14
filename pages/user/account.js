@@ -175,19 +175,19 @@ const Account = () => {
       </div>
       <button
         onClick={openModal}
-        className="bg-blue-600 text-white p-3 rounded w-full hover:bg-blue-700 transition duration-200"
+        className="bg-blue-900 text-white p-3 rounded w-full hover:bg-blue-400 hover:text-black transition duration-200"
       >
         Save
       </button>
       <button
         onClick={openPasswordModal}
-        className="bg-green-600 text-white p-3 rounded w-full mt-4 hover:bg-green-900 transition duration-200"
+        className="bg-green-900 text-white p-3 rounded w-full mt-4 hover:bg-green-400 hover:text-black transition duration-200"
       >
         Update Password
       </button>
       <button
         onClick={openDeleteHistoryModal}
-        className="bg-red-600 text-white p-3 rounded w-full mt-4 hover:bg-red-700 transition duration-200"
+        className="bg-red-900 text-white p-3 rounded w-full mt-4 hover:bg-red-400 hover:text-black transition duration-200"
       >
         Delete History
       </button>
