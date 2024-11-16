@@ -16,13 +16,13 @@ const Login = () => {
         <LoginForm handleLoginSuccess={handleLoginSuccess} />
         <p className="text-center text-gray-500 dark:text-gray-300 mt-4">
           Don't have an account ?{' '}
-          <a href="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <a href="/register" className="text-blue-800 font-bold dark:text-blue-400 hover:underline">
             Register here
           </a>
         </p>
         <p className="text-center text-gray-500 dark:text-gray-300 mt-4">
           Forgot password ?{' '}
-          <a href="/forgot-password" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <a href="/forgot-password" className="text-blue-800 font-bold dark:text-blue-400 hover:underline">
             Reset Password
           </a>
         </p>
