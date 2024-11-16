@@ -119,25 +119,25 @@ const AxeCoreResultsTable = ({ results }) => {
       <div className="mb-4">
         <button
           onClick={() => setActiveTab('violations')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'violations' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
+          className={`px-4 py-2 mr-2 rounded ${activeTab === 'violations' ? 'bg-blue-800 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
         >
           Violations
         </button>
         <button
           onClick={() => setActiveTab('incomplete')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'incomplete' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
+          className={`px-4 py-2 mr-2 rounded ${activeTab === 'incomplete' ? 'bg-blue-800 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
         >
           Incomplete Results
         </button>
         <button
           onClick={() => setActiveTab('passing')}
-          className={`px-4 py-2 rounded ${activeTab === 'passing' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
+          className={`px-4 py-2 rounded ${activeTab === 'passing' ? 'bg-blue-800 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
         >
           Passing Results
         </button>
         <button
           onClick={() => setActiveTab('general')}
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'general' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
+          className={`px-4 py-2 mr-2 rounded ${activeTab === 'general' ? 'bg-blue-800 text-white' : 'bg-gray-200 dark:bg-gray-800'}`}
         >
           General Information
         </button>
