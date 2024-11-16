@@ -12,6 +12,8 @@ AccessiTest is a modern web application designed to analyze accessibility issues
 - **React**: For building the user interface and managing component states.
 - **Tailwind CSS**: For styling and responsive design, ensuring a modern and user-friendly interface.
 - **React Toastify**: For displaying toast notifications to enhance user experience during login, registration, and other actions.
+- **Nodemailer**: Nodemailer is used for sending results to email and to receive feedback from contact us page.
+- **Mistral AI**: API is used to analyze axe-core issues and generate fix suggestions
 
 ## Current Features
 
@@ -23,13 +25,9 @@ AccessiTest is a modern web application designed to analyze accessibility issues
 - Inspect url using axe-core functionality to find accessibility issues for a url
 - Store the history of those results for user
 - Retrieve the accessibility results and present it to the user
-
-## Pending Features
-
-- Multiple integration
+- Multiple integration (pa11y, axe-core)
 - Dashboard visualization for each tools
-- Comparison metrics
-- Code fix suggestions using AI SDK
+- Code fix suggestions using AI SDK (Mistral AI)
 
 ## Hosting
 
@@ -41,11 +39,11 @@ AccessiTest is hosted on [Vercel](https://vercel.com), providing a fast and reli
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/arun664/accessitest.git
    cd accessitest
 2. Install Node Package
    ```bash
-   npm install
+   npm install --legacy-peer-deps
 3. Run the project in development mode
    ```bash
    npm run dev
