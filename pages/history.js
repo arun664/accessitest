@@ -175,7 +175,7 @@ const HistoryPage = () => {
             <div className="flex space-x-2 mt-2">
               <button
                 onClick={applyFilters}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-blue-300 text-black dark:bg-blue-500 dark:hover:bg-blue-300 px-4 py-2 rounded"
               >
                 Apply Filters
               </button>

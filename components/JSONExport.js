@@ -20,7 +20,7 @@ const JSONExport = ({ selectedItems }) => {
   return (
       <button
         onClick={exportToJSON}
-        className="px-4 py-2 bg-orange-500 text-white rounded"
+        className="px-4 py-2 bg-orange-800 text-white rounded"
       >
         Export JSON
       </button>

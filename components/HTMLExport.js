@@ -281,7 +281,7 @@ const HTMLExport = ({ selectedItems }) => {
         Please select only <strong><i>ONE ITEM</i></strong> to download HTML report:
       </p>
       <button
-        className="bg-blue-500 text-white py-2 px-4 rounded"
+        className="bg-blue-800 text-white py-2 px-4 rounded"
         onClick={exportToHTML}
       >
         Export to HTML

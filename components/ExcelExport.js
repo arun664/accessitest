@@ -78,7 +78,7 @@ const ExcelExport = ({ selectedItems }) => {
   };
 
   return (
-    <button onClick={exportToExcel} className="px-4 py-2 bg-green-500 text-white rounded mr-2">
+    <button onClick={exportToExcel} className="px-4 py-2 bg-green-800 text-white rounded mr-2">
       Export to Excel
     </button>
   );
