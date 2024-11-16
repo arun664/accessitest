@@ -82,7 +82,7 @@ const RegistrationForm = () => {
       </button>
       <p className="text-center text-gray-900 dark:text-gray-400  mt-4">
         Already have an account?{' '}
-        <a href="/login" className="text-blue-600 dark:text-blue-400 hover:underline">
+        <a href="/login" className="text-blue-800 font-bold dark:text-blue-400 hover:underline">
           Login here
         </a>
       </p>
