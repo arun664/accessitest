@@ -168,7 +168,7 @@ const MistralAISuggestions = ({ results }) => {
       </h1>
       <button
         onClick={openModal}
-        className="mb-6 p-2 bg-blue-500 text-white text-center rounded-md hover:bg-blue-600 focus:outline-none flex justify-center items-center mx-auto"
+        className="mb-6 p-2 bg-blue-300 text-black dark:bg-blue-500 dark:hover:bg-blue-300 rounded-md hover:bg-blue-700 hover:text-white focus:outline-none flex justify-center items-center mx-auto"
       >
         Send Results to Email
       </button>
@@ -243,7 +243,7 @@ const MistralAISuggestions = ({ results }) => {
                         : `${item.advice.slice(0, 200)}...`}
                       {item.advice.length > 200 && (
                         <button
-                          className="text-blue-500 ml-2"
+                          className="text-blue-800 ml-2"
                           onClick={() => toggleExpandCell(`advice-${item.id}`)}
                         >
                           {expandedCells[`advice-${item.id}`]
@@ -292,7 +292,7 @@ const MistralAISuggestions = ({ results }) => {
                   </button>
                   <button
                     className={`px-4 py-2 ${
-                      sending ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+                      sending ? "bg-gray-400" : "bg-blue-300 text-black dark:bg-blue-500 dark:hover:bg-blue-300 rounded hover:bg-blue-700 hover:text-white"
                     } text-white center rounded-md focus:outline-none`}
                     onClick={handleEmailSend}
                     disabled={sending}
