@@ -198,8 +198,10 @@ const Account = () => {
           <div className="bg-white dark:bg-gray-900 p-4 rounded shadow-lg w-full max-w-sm">
             <h2 className="text-lg font-semibold mb-2 dark:text-white">Confirm to Delete History</h2>
             <p className="mb-4 dark:text-gray-300">Please enter your password to confirm the deletion of your history.</p>
+            <label htmlFor="currentPassword2">Current Password</label>
             <input
               type="password"
+              id="currentPassword2"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               className="border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
@@ -221,8 +223,10 @@ const Account = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white dark:bg-gray-900 p-4 rounded shadow-lg w-full max-w-sm">
             <h2 className="text-lg font-semibold mb-2 dark:text-white">Confirm Your Password</h2>
+            <label htmlFor="currentPassword3">Current Password</label>
             <input
               type="password"
+              id="currentPassword3"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               className="border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
@@ -244,22 +248,28 @@ const Account = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white dark:bg-gray-900 p-4 rounded shadow-lg w-full max-w-sm">
             <h2 className="text-lg font-semibold mb-2 dark:text-white">Update Password</h2>
+            <label htmlFor="currentPassword">Current Password</label>
             <input
               type="password"
+              id="currentPassword"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Current Password"
               className="border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
             />
+            <label htmlFor="newPassword">New Password</label>
             <input
               type="password"
+              id="newPassword"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="New Password"
               className="border border-gray-300 p-3 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-black dark:bg-gray-900 dark:text-white"
             />
+            <label htmlFor="confirmNewPassword">Confirm New Password</label>
             <input
               type="password"
+              id="confirmNewPassword"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               placeholder="Confirm New Password"

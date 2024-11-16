@@ -136,30 +136,38 @@ const HistoryPage = () => {
               <HTMLExport selectedItems={selectedItems} />
             </div>
 
+            <label htmlFor="urlFilter">URL Filter</label>
             <input
               type="text"
               placeholder="Filter by URL"
               value={urlFilter}
+              id="urlFilter"
               onChange={(e) => setUrlFilter(e.target.value)}
               className="border p-2 dark:bg-gray-900 dark:text-white"
             />
+            <label htmlFor="versionFilter">Version Filter</label>
             <input
               type="text"
               placeholder="Filter by Version"
+              id="versionFilter"
               value={versionFilter}
               onChange={(e) => setVersionFilter(e.target.value)}
               className="border p-2 dark:bg-gray-900 dark:text-white"
             />
+            <label htmlFor="timestampFilter">Timestamp Filter</label>
             <input
               type="date"
               placeholder="Filter by Timestamp"
+              id="timestampFilter"
               value={timestampFilter}
               onChange={(e) => setTimestampFilter(e.target.value)}
               className="border p-2 dark:bg-gray-900 dark:text-white"
             />
+            <label htmlFor="toolFilter">Tool Filter</label>
             <input
               type="text"
               placeholder="Filter by Tool"
+              id="toolFilter"
               value={toolFilter}
               onChange={(e) => setToolFilter(e.target.value)}
               className="border dark:bg-gray-900 p-2"
@@ -204,13 +212,14 @@ const HistoryPage = () => {
               <thead>
                 <tr className="bg-gray-200">
                   <th className="border border-gray-300 dark:bg-gray-900 p-2">
+                    <label htmlFor="selectAll">Select All</label>
                     <input
                       type="checkbox"
+                      id="selectAll"
                       checked={isAllSelected}
                       onChange={toggleSelectAll}
                       className="mr-2"
                     />
-                    Select All
                   </th>
                   <th className="border border-gray-300 dark:bg-gray-900 p-2">
                     URL
@@ -230,8 +239,10 @@ const HistoryPage = () => {
                 {filteredData.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-100">
                     <td className="border border-gray-300 dark:bg-gray-900 p-2 text-center">
+                      <label htmlFor={`item-${item.id}`}>Select</label>
                       <input
                         type="checkbox"
+                        id={`item-${item.id}`}
                         checked={selectedItems.includes(item)}
                         onChange={() => toggleSelection(item)}
                         className="mr-2"
