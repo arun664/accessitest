@@ -209,7 +209,7 @@ const MistralAISuggestions = ({ results }) => {
                         : `${item.description.slice(0, 200)}...`}
                       {item.description.length > 200 && (
                         <button
-                          className="text-blue-500 ml-2"
+                          className="text-blue-800 font-bold ml-2"
                           onClick={() =>
                             toggleExpandCell(`violation-${item.id}`)
                           }
@@ -227,7 +227,7 @@ const MistralAISuggestions = ({ results }) => {
                         : `${item.html.slice(0, 200)}...`}
                       {item.html.length > 200 && (
                         <button
-                          className="text-blue-500 ml-2"
+                          className="text-blue-800 font-bold ml-2"
                           onClick={() => toggleExpandCell(`html-${item.id}`)}
                         >
                           {expandedCells[`html-${item.id}`]
@@ -243,7 +243,7 @@ const MistralAISuggestions = ({ results }) => {
                         : `${item.advice.slice(0, 200)}...`}
                       {item.advice.length > 200 && (
                         <button
-                          className="text-blue-800 ml-2"
+                          className="text-blue-800 font-bold ml-2"
                           onClick={() => toggleExpandCell(`advice-${item.id}`)}
                         >
                           {expandedCells[`advice-${item.id}`]
