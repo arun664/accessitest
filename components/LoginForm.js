@@ -10,12 +10,20 @@ const LoginForm = ({ handleLoginSuccess }) => {
   const { login } = useContext(AuthContext); // Access login function from AuthContext
   const router = useRouter();
 
+  // Email validation
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const handleLogin = async () => {
+    // Check if fields are empty
+    if (!email || !password) {
+      toast.error('Please fill in both email and password.');
+      return;
+    }
+
+    // Check for valid email format
     if (!isValidEmail(email)) {
       toast.error('Please enter a valid email address.');
       return;
@@ -31,7 +39,7 @@ const LoginForm = ({ handleLoginSuccess }) => {
       });
 
       const result = await response.json();
-      
+
       if (response.ok) {
         toast.success('Login successful!');
         handleLoginSuccess(result);
