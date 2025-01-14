@@ -80,11 +80,11 @@ export default function Home() {
         <LoadingSpinner />
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          <label htmlFor="url">Enter URL</label>
           <input
             type="url"
             id="url"
             placeholder="Enter URL"
+            aria-label="Enter URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="px-4 py-2 border rounded mb-4 w-80 text-black dark:bg-gray-900 dark:text-white"
